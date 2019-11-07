@@ -1,5 +1,7 @@
 # Sudoku Clone of [sudoku.com](https://sudoku.com)
 
+Built to learn TDD with Jest and Enzyme
+
 ## Technologies
 * `TypeScript`
 * `React`
@@ -13,7 +15,7 @@
   * `Tile` - Number or note container
 * `<Keypad />` - Contains 
   <!-- * numbers, Notes toggle, Hint, Undo, Erase -->
-  * `<KeypadNumber />`
+  * `Numkey`
   <!-- * `<ToggleNotesButton />` -->
   <!-- * `<GetHintButton />` -->
   <!-- * `<UndoButton />` -->
