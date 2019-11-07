@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import Keypad from '../../components/App';
+import Keypad from '../../components/Keypad';
 import { Numkey } from '../../components/Numkey';
 
 const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9];
