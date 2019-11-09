@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import Tile from '../../components/Tile';
-import { TileType } from '../../types/gameBoard';
+import { TileValue } from '../../types/gameBoard';
 
 describe('<Tile />', () => {
   let wrapper: ShallowWrapper;
 
-  const children: TileType = 1;
+  const children: TileValue = 1;
   const handleClick = jest.fn();
 
   beforeEach(

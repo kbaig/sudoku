@@ -23,23 +23,48 @@ export const Board: React.FC<Props> = ({
     <div className='board'>
       {gameBoard.map((row, i) => (
         <React.Fragment key={i}>
-          {row.map((value, j) => (
-            <Tile
-              onClick={() => selectTile(i, j)}
-              isSelected={
-                !!selectedTile && selectedTile[0] === i && selectedTile[1] === j
-              }
-              isHighlighted={
-                !!selectedTile &&
-                (selectedTile[0] === i ||
-                  selectedTile[1] === j ||
-                  isInSameSquare([i, j], selectedTile, gameBoard))
-              }
-              key={j}
-            >
-              {value}
-            </Tile>
-          ))}
+          {/* ternary to help TS know isReadOnly beforehand */}
+          {row.map(({ isReadOnly, value }, j) =>
+            isReadOnly ? (
+              <Tile
+                isReadOnly={isReadOnly}
+                onClick={() => selectTile(i, j)}
+                isSelected={
+                  !!selectedTile &&
+                  selectedTile[0] === i &&
+                  selectedTile[1] === j
+                }
+                isHighlighted={
+                  !!selectedTile &&
+                  (selectedTile[0] === i ||
+                    selectedTile[1] === j ||
+                    isInSameSquare([i, j], selectedTile, gameBoard))
+                }
+                key={j}
+              >
+                {value}
+              </Tile>
+            ) : (
+              <Tile
+                isReadOnly={isReadOnly}
+                onClick={() => selectTile(i, j)}
+                isSelected={
+                  !!selectedTile &&
+                  selectedTile[0] === i &&
+                  selectedTile[1] === j
+                }
+                isHighlighted={
+                  !!selectedTile &&
+                  (selectedTile[0] === i ||
+                    selectedTile[1] === j ||
+                    isInSameSquare([i, j], selectedTile, gameBoard))
+                }
+                key={j}
+              >
+                {value}
+              </Tile>
+            )
+          )}
         </React.Fragment>
       ))}
     </div>

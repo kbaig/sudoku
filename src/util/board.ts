@@ -1,7 +1,13 @@
 import easyBoard from '../mockData/easyBoard';
 import { BoardType } from '../types/gameBoard';
 
-export const generateBoard = () => easyBoard;
+export const generateBoard = (): BoardType =>
+  easyBoard.map(row =>
+    row.map(value => ({
+      isReadOnly: typeof value === 'number',
+      value
+    }))
+  ) as BoardType;
 
 export const getBoardLength = (board: BoardType) =>
   board.reduce((total, row) => total + row.length, 0);

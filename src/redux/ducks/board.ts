@@ -56,16 +56,25 @@ const reducer: Reducer<BoardState, BoardAction> = (
       const { row, column } = action.payload;
       return { ...state, selectedTile: [row, column] };
     case NUMBER_PRESSED:
-      // only do something if there's a selected tile
+      // only do something if there's a selected tile and it's editable
       if (state.selectedTile) {
         const gameBoard = [...state.gameBoard] as BoardType;
         const [row, column] = state.selectedTile;
-        gameBoard[row][column] = action.payload;
 
-        return { ...state, gameBoard };
-      } else {
-        return state;
+        const prevTileState = gameBoard[row][column];
+
+        if (!prevTileState.isReadOnly) {
+          // added isReadOnly into new state explicitly to inform TS
+          gameBoard[row][column] = {
+            ...prevTileState,
+            isReadOnly: prevTileState.isReadOnly,
+            value: action.payload
+          };
+          return { ...state, gameBoard };
+        }
       }
+      return state;
+
     default:
       return state;
   }

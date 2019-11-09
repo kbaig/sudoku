@@ -1,11 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 import './Tile.css';
-import { TileType } from '../../types/gameBoard';
+import { TileValue } from '../../types/gameBoard';
 
 interface BaseProps {
-  isReadOnly?: boolean;
-  children?: TileType;
   isSelected?: boolean;
   isHighlighted?: boolean;
   onClick: () => void;
@@ -13,11 +11,12 @@ interface BaseProps {
 
 interface ReadOnlyProps extends BaseProps {
   isReadOnly: true;
-  children: TileType;
+  children: TileValue;
 }
 
 interface EditableProps extends BaseProps {
   isReadOnly?: false;
+  children?: TileValue;
 }
 
 type Props = ReadOnlyProps | EditableProps;

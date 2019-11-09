@@ -26,6 +26,26 @@ describe('<Board />', () => {
     expect(wrapper.find(Tile).length).toBe(boardLength);
   });
 
+  it('should correctly assign children prop to <Tile />s', () => {
+    board.forEach((row, i) => {
+      row.forEach(({ value }, j) => {
+        const children = wrapper.childAt(i * board.length + j).prop('children');
+        expect(children).toBe(value);
+      });
+    });
+  });
+
+  it('should correctly assign isReadOnly prop to <Tile />s', () => {
+    board.forEach((row, i) => {
+      row.forEach(({ isReadOnly }, j) => {
+        const children = wrapper
+          .childAt(i * board.length + j)
+          .prop('isReadOnly');
+        expect(children).toBe(isReadOnly);
+      });
+    });
+  });
+
   it('should correctly assign onClick prop to <Tile />s', () => {
     board.forEach((row, i) => {
       row.forEach((col, j) => {
