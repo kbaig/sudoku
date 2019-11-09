@@ -17,7 +17,7 @@ describe('<Tile />', () => {
     expect(parseInt(wrapper.text())).toBe(children);
   });
 
-  it('should have a class if it is selected', () => {
+  it('should have .tile--selected if it is selected', () => {
     expect(wrapper.find('.tile--selected').length).toBe(0);
 
     wrapper = shallow(
@@ -29,7 +29,7 @@ describe('<Tile />', () => {
     expect(wrapper.find('.tile--selected').length).toBe(1);
   });
 
-  it('should have a class if it is highlighted', () => {
+  it('should have .tile--highlighted if it is highlighted', () => {
     expect(wrapper.find('.tile--highlighted').length).toBe(0);
 
     wrapper = shallow(
@@ -39,6 +39,18 @@ describe('<Tile />', () => {
     );
 
     expect(wrapper.find('.tile--highlighted').length).toBe(1);
+  });
+
+  it('should only have .tile--read-only if it is read only', () => {
+    expect(wrapper.find('.tile--read-only').length).toBe(0);
+
+    wrapper = shallow(
+      <Tile isReadOnly onClick={handleClick}>
+        {children}
+      </Tile>
+    );
+
+    expect(wrapper.find('.tile--read-only').length).toBe(1);
   });
 
   it('should call the passed click handler on click', () => {

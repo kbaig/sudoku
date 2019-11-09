@@ -3,20 +3,34 @@ import classnames from 'classnames';
 import './Tile.css';
 import { TileType } from '../../types/gameBoard';
 
-interface Props {
+interface BaseProps {
+  isReadOnly?: boolean;
   children?: TileType;
   isSelected?: boolean;
   isHighlighted?: boolean;
   onClick: () => void;
 }
 
+interface ReadOnlyProps extends BaseProps {
+  isReadOnly: true;
+  children: TileType;
+}
+
+interface EditableProps extends BaseProps {
+  isReadOnly?: false;
+}
+
+type Props = ReadOnlyProps | EditableProps;
+
 const Tile: React.FC<Props> = ({
+  isReadOnly,
   isSelected,
   isHighlighted,
   onClick,
   children
 }) => {
   const tileClassNames = classnames('tile', {
+    'tile--read-only': isReadOnly,
     'tile--selected': isSelected,
     'tile--highlighted': isHighlighted
   });

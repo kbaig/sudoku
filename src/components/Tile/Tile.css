@@ -4,12 +4,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: blue;
+}
+
+.tile--read-only {
+  color: black;
+}
+
+/* preserve order between highlighted selected for specificity */
+.tile.tile--highlighted {
+  background: lightgrey;
 }
 
 .tile.tile--selected {
   background: lightblue;
-}
-
-.tile.tile--highlighted {
-  background: lightgrey;
 }
