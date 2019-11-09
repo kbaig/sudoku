@@ -1,20 +1,17 @@
 import { createStore, combineReducers } from 'redux';
 import boardReducer, { BoardAction } from './ducks/board';
-import selectedTileReducer, { SelectedTileAction } from './ducks/selectedTile';
 import { generateBoard } from '../util/board';
 
 const rootReducer = combineReducers({
-  board: boardReducer,
-  selectedTile: selectedTileReducer
+  board: boardReducer
 });
 
 export type State = ReturnType<typeof rootReducer>;
 
-export type ActionType = BoardAction | SelectedTileAction;
+export type ActionType = BoardAction;
 
 const initialState: State = {
-  board: generateBoard(),
-  selectedTile: null
+  board: { gameBoard: generateBoard(), selectedTile: null }
 };
 
 export const store = createStore(rootReducer, initialState);

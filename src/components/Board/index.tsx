@@ -4,20 +4,24 @@ import Tile from '../Tile';
 import './Board.css';
 import { BoardType } from '../../types/gameBoard';
 import { State, ActionType } from '../../redux';
-import { SelectedTile, selectTile } from '../../redux/ducks/selectedTile';
 import { Dispatch } from 'redux';
 import { isInSameSquare } from '../../util/board';
+import { SelectedTile, selectTile } from '../../redux/ducks/board';
 
 interface Props {
-  board: BoardType;
+  gameBoard: BoardType;
   selectedTile: SelectedTile;
   selectTile: (row: number, col: number) => void;
 }
 
-export const Board: React.FC<Props> = ({ board, selectedTile, selectTile }) => {
+export const Board: React.FC<Props> = ({
+  gameBoard,
+  selectedTile,
+  selectTile
+}) => {
   return (
     <div className='board'>
-      {board.map((row, i) => (
+      {gameBoard.map((row, i) => (
         <React.Fragment key={i}>
           {row.map((value, j) => (
             <Tile
@@ -29,7 +33,7 @@ export const Board: React.FC<Props> = ({ board, selectedTile, selectTile }) => {
                 !!selectedTile &&
                 (selectedTile[0] === i ||
                   selectedTile[1] === j ||
-                  isInSameSquare([i, j], selectedTile, board))
+                  isInSameSquare([i, j], selectedTile, gameBoard))
               }
               key={j}
             >
@@ -42,8 +46,8 @@ export const Board: React.FC<Props> = ({ board, selectedTile, selectTile }) => {
   );
 };
 
-const mapStateToProps = ({ board, selectedTile }: State) => ({
-  board,
+const mapStateToProps = ({ board: { gameBoard, selectedTile } }: State) => ({
+  gameBoard,
   selectedTile
 });
 

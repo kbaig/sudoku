@@ -18,7 +18,7 @@ describe('<Board />', () => {
   beforeEach(
     () =>
       (wrapper = shallow(
-        <Board board={board} selectedTile={null} selectTile={selectTile} />
+        <Board gameBoard={board} selectedTile={null} selectTile={selectTile} />
       ))
   );
 
@@ -39,7 +39,7 @@ describe('<Board />', () => {
     expect(wrapper.find({ isSelected: true }).length).toBe(0);
 
     wrapper = shallow(
-      <Board board={board} selectedTile={[0, 0]} selectTile={selectTile} />
+      <Board gameBoard={board} selectedTile={[0, 0]} selectTile={selectTile} />
     );
 
     expect(wrapper.childAt(0).prop('isSelected')).toBe(true);
@@ -55,7 +55,7 @@ describe('<Board />', () => {
 
     wrapper = shallow(
       <Board
-        board={board}
+        gameBoard={board}
         selectedTile={[selectedRow, selectedCol]}
         selectTile={selectTile}
       />
