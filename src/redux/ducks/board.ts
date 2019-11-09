@@ -25,7 +25,7 @@ interface SelectTileAction {
 
 interface PressNumberAction {
   type: typeof NUMBER_PRESSED;
-  payload: number;
+  payload: TileNumberType;
 }
 
 export type BoardAction = PressNumberAction | SelectTileAction;
@@ -55,6 +55,17 @@ const reducer: Reducer<BoardState, BoardAction> = (
     case TILE_SELECTED:
       const { row, column } = action.payload;
       return { ...state, selectedTile: [row, column] };
+    case NUMBER_PRESSED:
+      // only do something if there's a selected tile
+      if (state.selectedTile) {
+        const gameBoard = [...state.gameBoard] as BoardType;
+        const [row, column] = state.selectedTile;
+        gameBoard[row][column] = action.payload;
+
+        return { ...state, gameBoard };
+      } else {
+        return state;
+      }
     default:
       return state;
   }

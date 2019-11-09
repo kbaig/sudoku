@@ -14,4 +14,10 @@ const initialState: State = {
   board: { gameBoard: generateBoard(), selectedTile: null }
 };
 
-export const store = createStore(rootReducer, initialState);
+export const store = createStore(
+  rootReducer,
+  initialState,
+  typeof window !== 'undefined' &&
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
