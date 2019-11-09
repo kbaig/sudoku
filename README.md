@@ -15,13 +15,13 @@ Built to learn TDD with Jest and Enzyme
 ## Components
 * `<Board />` - Container for squares
   * `Tile` - Number or note container
-* `<Keypad />` - Contains 
+* `<Keypad />`
   <!-- * numbers, Notes toggle, Hint, Undo, Erase -->
   * `Numkey`
   <!-- * `<ToggleNotesButton />` -->
   <!-- * `<GetHintButton />` -->
   <!-- * `<UndoButton />` -->
-  <!-- * `<EraseButton />` -->
+  * `<EraseButton />`
 <!-- * `<Timer />` -->
 <!-- * `<SelectDifficulty />` -->
 <!-- * `<CheckForMistakesToggle />` -->

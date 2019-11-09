@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import Keypad from '../../components/Keypad';
 import Numkey from '../../components/Numkey';
+import EraseButton from '../../components/EraseButton';
 
 const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -15,5 +16,9 @@ describe('<Keypad />', () => {
     keys.forEach((n, i) => {
       expect(wrapper.childAt(i).prop('children')).toEqual(n);
     });
+  });
+
+  it('renders a <EraseButton />', () => {
+    expect(wrapper.find(EraseButton).length).toBe(1);
   });
 });

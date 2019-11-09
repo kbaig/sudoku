@@ -13,6 +13,7 @@ interface BoardState {
 // actions
 const TILE_SELECTED = 'TILE_SELECTED';
 const NUMBER_PRESSED = 'NUMBER_PRESSED';
+const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
 
 // action creators
 interface SelectTileAction {
@@ -28,7 +29,14 @@ interface PressNumberAction {
   payload: TileNumberType;
 }
 
-export type BoardAction = PressNumberAction | SelectTileAction;
+interface EraseTileAction {
+  type: typeof ERASE_BUTTON_PRESSED;
+}
+
+export type BoardAction =
+  | PressNumberAction
+  | SelectTileAction
+  | EraseTileAction;
 
 export const selectTile = (row: number, column: number): SelectTileAction => ({
   type: TILE_SELECTED,
@@ -39,6 +47,8 @@ export const pressNumber = (num: TileNumberType): BoardAction => ({
   type: NUMBER_PRESSED,
   payload: num
 });
+
+export const eraseTile = (): BoardAction => ({ type: ERASE_BUTTON_PRESSED });
 
 // default state
 const defaultState: BoardState = {
@@ -74,7 +84,25 @@ const reducer: Reducer<BoardState, BoardAction> = (
         }
       }
       return state;
+    case ERASE_BUTTON_PRESSED:
+      // only erase if there's a selected tile and it's editable
+      if (state.selectedTile) {
+        const gameBoard = [...state.gameBoard] as BoardType;
+        const [row, column] = state.selectedTile;
 
+        const prevTileState = gameBoard[row][column];
+
+        if (!prevTileState.isReadOnly) {
+          // added isReadOnly into new state explicitly to inform TS
+          gameBoard[row][column] = {
+            ...prevTileState,
+            isReadOnly: prevTileState.isReadOnly,
+            value: null
+          };
+          return { ...state, gameBoard };
+        }
+      }
+      return state;
     default:
       return state;
   }
