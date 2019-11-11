@@ -1,4 +1,108 @@
-const easyBoard = [
+import { TileValue } from '../types/gameBoard';
+
+type mockEasyBoard = [
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ],
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ],
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ],
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ],
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ],
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ],
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ],
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ],
+  [
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue,
+    TileValue
+  ]
+];
+
+const easyBoard: mockEasyBoard = [
   [null, null, null, 9, 2, 8, 1, null, null],
   [null, 8, null, 7, null, 3, null, 2, 4],
   [2, 6, null, null, null, 5, null, 7, null],

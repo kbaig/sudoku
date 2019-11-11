@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import './Tile.css';
-import { TileValue } from '../../types/gameBoard';
+import { TileValue, TileNumberType } from '../../types/gameBoard';
 
 interface BaseProps {
   isSelected?: boolean;
@@ -10,26 +10,36 @@ interface BaseProps {
 }
 
 interface ReadOnlyProps extends BaseProps {
-  isReadOnly: true;
+  type: 'readOnly';
   children: TileValue;
 }
 
-interface EditableProps extends BaseProps {
-  isReadOnly?: false;
-  children?: TileValue;
+interface BlankProps extends BaseProps {
+  type: 'blank';
+  children?: null;
 }
 
-type Props = ReadOnlyProps | EditableProps;
+interface CorrectProps extends BaseProps {
+  type: 'correct';
+  children: TileNumberType;
+}
+
+interface NotesProps extends BaseProps {
+  type: 'notes';
+  children: Set<TileNumberType>;
+}
+
+type Props = ReadOnlyProps | BlankProps | CorrectProps | NotesProps;
 
 const Tile: React.FC<Props> = ({
-  isReadOnly,
+  type,
   isSelected,
   isHighlighted,
   onClick,
   children
 }) => {
   const tileClassNames = classnames('tile', {
-    'tile--read-only': isReadOnly,
+    'tile--read-only': type === 'readOnly',
     'tile--selected': isSelected,
     'tile--highlighted': isHighlighted
   });

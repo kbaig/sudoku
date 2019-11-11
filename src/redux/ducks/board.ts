@@ -1,19 +1,21 @@
-import { generateBoard } from '../../util/board';
+import { generateBoard, changeTileValue } from '../../util/board';
 import { TileNumberType, BoardType } from '../../types/gameBoard';
 import { Reducer } from 'redux';
 
 //types
 export type SelectedTile = null | [number, number];
 
-interface BoardState {
+export interface BoardState {
   gameBoard: BoardType;
   selectedTile: SelectedTile;
+  isInNotesMode: boolean;
 }
 
 // actions
 const TILE_SELECTED = 'TILE_SELECTED';
 const NUMBER_PRESSED = 'NUMBER_PRESSED';
 const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
+const TOGGLE_NOTES_BUTTON_PRESSED = 'TOGGLE_NOTES_BUTTON_PRESSED';
 
 // action creators
 interface SelectTileAction {
@@ -33,10 +35,15 @@ interface EraseTileAction {
   type: typeof ERASE_BUTTON_PRESSED;
 }
 
+interface ToggleNotesAction {
+  type: typeof TOGGLE_NOTES_BUTTON_PRESSED;
+}
+
 export type BoardAction =
   | PressNumberAction
   | SelectTileAction
-  | EraseTileAction;
+  | EraseTileAction
+  | ToggleNotesAction;
 
 export const selectTile = (row: number, column: number): SelectTileAction => ({
   type: TILE_SELECTED,
@@ -50,10 +57,15 @@ export const pressNumber = (num: TileNumberType): BoardAction => ({
 
 export const eraseTile = (): BoardAction => ({ type: ERASE_BUTTON_PRESSED });
 
+export const toggleNoptes = (): BoardAction => ({
+  type: TOGGLE_NOTES_BUTTON_PRESSED
+});
+
 // default state
 const defaultState: BoardState = {
   gameBoard: generateBoard(),
-  selectedTile: null
+  selectedTile: null,
+  isInNotesMode: false
 };
 
 // reducer
@@ -73,13 +85,12 @@ const reducer: Reducer<BoardState, BoardAction> = (
 
         const prevTileState = gameBoard[row][column];
 
-        if (!prevTileState.isReadOnly) {
-          // added isReadOnly into new state explicitly to inform TS
-          gameBoard[row][column] = {
-            ...prevTileState,
-            isReadOnly: prevTileState.isReadOnly,
-            value: action.payload
-          };
+        if (prevTileState.type !== 'readOnly') {
+          gameBoard[row][column] = changeTileValue(
+            prevTileState,
+            action.payload,
+            state.isInNotesMode
+          );
           return { ...state, gameBoard };
         }
       }
@@ -92,17 +103,18 @@ const reducer: Reducer<BoardState, BoardAction> = (
 
         const prevTileState = gameBoard[row][column];
 
-        if (!prevTileState.isReadOnly) {
-          // added isReadOnly into new state explicitly to inform TS
-          gameBoard[row][column] = {
-            ...prevTileState,
-            isReadOnly: prevTileState.isReadOnly,
-            value: null
-          };
+        if (prevTileState.type !== 'readOnly') {
+          gameBoard[row][column] = changeTileValue(
+            prevTileState,
+            null,
+            state.isInNotesMode
+          );
           return { ...state, gameBoard };
         }
       }
       return state;
+    case TOGGLE_NOTES_BUTTON_PRESSED:
+      return { ...state, isInNotesMode: !state.isInNotesMode };
     default:
       return state;
   }

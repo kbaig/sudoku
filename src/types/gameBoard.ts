@@ -3,16 +3,26 @@ export type TileNumberType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export type TileValue = null | TileNumberType;
 
 interface ReadOnlyTile {
-  isReadOnly: true;
+  type: 'readOnly';
   value: TileNumberType;
 }
 
-interface EditableTile {
-  isReadOnly: false;
-  value: TileValue;
+export interface BlankTile {
+  type: 'blank';
+  value: null;
 }
 
-export type TileType = ReadOnlyTile | EditableTile;
+export interface CorrectTile {
+  type: 'correct';
+  value: TileNumberType;
+}
+
+export interface NotesTile {
+  type: 'notes';
+  value: Set<TileNumberType>;
+}
+
+export type TileType = ReadOnlyTile | BlankTile | CorrectTile | NotesTile;
 
 export type Row = [
   TileType,

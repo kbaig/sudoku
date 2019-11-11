@@ -3,6 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import Keypad from '../../components/Keypad';
 import Numkey from '../../components/Numkey';
 import EraseButton from '../../components/EraseButton';
+import ToggleNotesButton from '../../components/ToggleNotesButton';
 
 const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -20,5 +21,9 @@ describe('<Keypad />', () => {
 
   it('renders a <EraseButton />', () => {
     expect(wrapper.find(EraseButton).length).toBe(1);
+  });
+
+  it('renders a <ToggleNotesButton />', () => {
+    expect(wrapper.find(ToggleNotesButton).length).toBe(1);
   });
 });

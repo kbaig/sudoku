@@ -24,10 +24,11 @@ export const Board: React.FC<Props> = ({
       {gameBoard.map((row, i) => (
         <React.Fragment key={i}>
           {/* ternary to help TS know isReadOnly beforehand */}
-          {row.map(({ isReadOnly, value }, j) =>
-            isReadOnly ? (
+          {row.map(({ type, value }, j) => {
+            return (
               <Tile
-                isReadOnly={isReadOnly}
+                key={j}
+                type={type}
                 onClick={() => selectTile(i, j)}
                 isSelected={
                   !!selectedTile &&
@@ -40,36 +41,38 @@ export const Board: React.FC<Props> = ({
                     selectedTile[1] === j ||
                     isInSameSquare([i, j], selectedTile, gameBoard))
                 }
-                key={j}
               >
                 {value}
               </Tile>
-            ) : (
-              <Tile
-                isReadOnly={isReadOnly}
-                onClick={() => selectTile(i, j)}
-                isSelected={
-                  !!selectedTile &&
-                  selectedTile[0] === i &&
-                  selectedTile[1] === j
-                }
-                isHighlighted={
-                  !!selectedTile &&
-                  (selectedTile[0] === i ||
-                    selectedTile[1] === j ||
-                    isInSameSquare([i, j], selectedTile, gameBoard))
-                }
-                key={j}
-              >
-                {value}
-              </Tile>
-            )
-          )}
+            );
+          })}
         </React.Fragment>
       ))}
     </div>
   );
 };
+
+{
+  /* <Tile
+  key={j}
+  isReadOnly={isReadOnly}
+  type={}
+  onClick={() => selectTile(i, j)}
+  isSelected={
+    !!selectedTile &&
+    selectedTile[0] === i &&
+    selectedTile[1] === j
+  }
+  isHighlighted={
+    !!selectedTile &&
+    (selectedTile[0] === i ||
+      selectedTile[1] === j ||
+      isInSameSquare([i, j], selectedTile, gameBoard))
+  }
+>
+  {value}
+</Tile> */
+}
 
 const mapStateToProps = ({ board: { gameBoard, selectedTile } }: State) => ({
   gameBoard,

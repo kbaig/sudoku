@@ -11,7 +11,11 @@ export type State = ReturnType<typeof rootReducer>;
 export type ActionType = BoardAction;
 
 const initialState: State = {
-  board: { gameBoard: generateBoard(), selectedTile: null }
+  board: {
+    gameBoard: generateBoard(),
+    selectedTile: null,
+    isInNotesMode: false
+  }
 };
 
 export const store = createStore(

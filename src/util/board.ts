@@ -1,12 +1,27 @@
 import easyBoard from '../mockData/easyBoard';
-import { BoardType } from '../types/gameBoard';
+import {
+  BoardType,
+  CorrectTile,
+  NotesTile,
+  TileValue,
+  BlankTile
+} from '../types/gameBoard';
 
 export const generateBoard = (): BoardType =>
   easyBoard.map(row =>
-    row.map(value => ({
-      isReadOnly: typeof value === 'number',
-      value
-    }))
+    row.map(value => {
+      if (typeof value === 'number') {
+        return {
+          type: 'readOnly',
+          value
+        };
+      } else {
+        return {
+          type: 'blank',
+          value
+        };
+      }
+    })
   ) as BoardType;
 
 export const getBoardLength = (board: BoardType) =>
@@ -35,3 +50,36 @@ export const isInSameSquare = (
     currentCol <= rightCol
   );
 };
+
+export function changeTileValue(
+  tile: BlankTile | CorrectTile | NotesTile,
+  value: TileValue,
+  isInNotesMode?: boolean
+): BlankTile | CorrectTile | NotesTile {
+  // return NotesTile if in notes mode
+  if (isInNotesMode) {
+    return {
+      ...tile,
+      type: 'notes',
+      value: !value
+        ? new Set()
+        : tile.type === 'notes'
+        ? new Set(tile.value).add(value)
+        : new Set()
+    };
+  } else if (!value) {
+    // return BlankTile
+    return {
+      ...tile,
+      type: 'blank',
+      value
+    };
+  } else {
+    // return CorrectTile
+    return {
+      ...tile,
+      type: 'correct',
+      value
+    };
+  }
+}
