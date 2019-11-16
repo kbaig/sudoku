@@ -64,9 +64,13 @@ export function changeTileValue(
     if (value && tile.type === 'notes') {
       newValue = new Set(tile.value);
       tile.value.has(value) ? newValue.delete(value) : newValue.add(value);
+    } else if (value) {
+      newValue = new Set([value]);
     } else {
       newValue = new Set();
     }
+
+    console.log(newValue);
 
     return {
       ...tile,
