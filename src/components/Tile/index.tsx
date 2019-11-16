@@ -1,35 +1,15 @@
 import React from 'react';
 import classnames from 'classnames';
 import './Tile.css';
-import { TileValue, TileNumberType } from '../../types/gameBoard';
+import { TileNumberType } from '../../types/gameBoard';
 
-interface BaseProps {
+interface Props {
   isSelected?: boolean;
   isHighlighted?: boolean;
   onClick: () => void;
+  type: 'readOnly' | 'blank' | 'correct' | 'notes';
+  children?: TileNumberType | null | Set<TileNumberType>;
 }
-
-interface ReadOnlyProps extends BaseProps {
-  type: 'readOnly';
-  children: TileValue;
-}
-
-interface BlankProps extends BaseProps {
-  type: 'blank';
-  children?: null;
-}
-
-interface CorrectProps extends BaseProps {
-  type: 'correct';
-  children: TileNumberType;
-}
-
-interface NotesProps extends BaseProps {
-  type: 'notes';
-  children: Set<TileNumberType>;
-}
-
-type Props = ReadOnlyProps | BlankProps | CorrectProps | NotesProps;
 
 const Tile: React.FC<Props> = ({
   type,
@@ -40,13 +20,30 @@ const Tile: React.FC<Props> = ({
 }) => {
   const tileClassNames = classnames('tile', {
     'tile--read-only': type === 'readOnly',
+    'tile--correct': type === 'correct',
+    'tile--notes': type === 'notes',
     'tile--selected': isSelected,
     'tile--highlighted': isHighlighted
   });
 
   return (
     <div className={tileClassNames} onClick={onClick}>
-      {children}
+      {children instanceof Set
+        ? Array.from(children as Set<TileNumberType>)
+            .sort((a, b) => a - b)
+            .map(n => (
+              <div
+                key={n}
+                className='note'
+                style={{
+                  gridColumnStart: n % 3 || 3,
+                  gridRowStart: Math.ceil(n / 3)
+                }}
+              >
+                {n}
+              </div>
+            ))
+        : children}
     </div>
   );
 };

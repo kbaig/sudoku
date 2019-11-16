@@ -1,6 +1,5 @@
 .board {
-  border: 1px solid black;
   display: grid;
-  grid-template-columns: repeat(9, auto);
-  grid-auto-rows: 40px;
+  grid-template-columns: repeat(9, 55px);
+  grid-auto-rows: 55px;
 }

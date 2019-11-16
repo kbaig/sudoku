@@ -4,7 +4,8 @@ import {
   CorrectTile,
   NotesTile,
   TileValue,
-  BlankTile
+  BlankTile,
+  TileNumberType
 } from '../types/gameBoard';
 
 export const generateBoard = (): BoardType =>
@@ -58,14 +59,19 @@ export function changeTileValue(
 ): BlankTile | CorrectTile | NotesTile {
   // return NotesTile if in notes mode
   if (isInNotesMode) {
+    let newValue: Set<TileNumberType>;
+
+    if (value && tile.type === 'notes') {
+      newValue = new Set(tile.value);
+      tile.value.has(value) ? newValue.delete(value) : newValue.add(value);
+    } else {
+      newValue = new Set();
+    }
+
     return {
       ...tile,
       type: 'notes',
-      value: !value
-        ? new Set()
-        : tile.type === 'notes'
-        ? new Set(tile.value).add(value)
-        : new Set()
+      value: newValue
     };
   } else if (!value) {
     // return BlankTile

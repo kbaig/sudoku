@@ -23,56 +23,29 @@ export const Board: React.FC<Props> = ({
     <div className='board'>
       {gameBoard.map((row, i) => (
         <React.Fragment key={i}>
-          {/* ternary to help TS know isReadOnly beforehand */}
-          {row.map(({ type, value }, j) => {
-            return (
-              <Tile
-                key={j}
-                type={type}
-                onClick={() => selectTile(i, j)}
-                isSelected={
-                  !!selectedTile &&
-                  selectedTile[0] === i &&
-                  selectedTile[1] === j
-                }
-                isHighlighted={
-                  !!selectedTile &&
-                  (selectedTile[0] === i ||
-                    selectedTile[1] === j ||
-                    isInSameSquare([i, j], selectedTile, gameBoard))
-                }
-              >
-                {value}
-              </Tile>
-            );
-          })}
+          {row.map(({ type, value }, j) => (
+            <Tile
+              key={j}
+              type={type}
+              onClick={() => selectTile(i, j)}
+              isSelected={
+                !!selectedTile && selectedTile[0] === i && selectedTile[1] === j
+              }
+              isHighlighted={
+                !!selectedTile &&
+                (selectedTile[0] === i ||
+                  selectedTile[1] === j ||
+                  isInSameSquare([i, j], selectedTile, gameBoard))
+              }
+            >
+              {value}
+            </Tile>
+          ))}
         </React.Fragment>
       ))}
     </div>
   );
 };
-
-{
-  /* <Tile
-  key={j}
-  isReadOnly={isReadOnly}
-  type={}
-  onClick={() => selectTile(i, j)}
-  isSelected={
-    !!selectedTile &&
-    selectedTile[0] === i &&
-    selectedTile[1] === j
-  }
-  isHighlighted={
-    !!selectedTile &&
-    (selectedTile[0] === i ||
-      selectedTile[1] === j ||
-      isInSameSquare([i, j], selectedTile, gameBoard))
-  }
->
-  {value}
-</Tile> */
-}
 
 const mapStateToProps = ({ board: { gameBoard, selectedTile } }: State) => ({
   gameBoard,
@@ -83,7 +56,4 @@ const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   selectTile: (row: number, column: number) => dispatch(selectTile(row, column))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Board);
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
