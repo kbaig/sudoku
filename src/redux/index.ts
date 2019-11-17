@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux';
 import boardReducer, { BoardAction } from './ducks/board';
-import { generateBoard } from '../util/board';
+import { getNewBoard } from '../util/generateBoard';
 
 const rootReducer = combineReducers({
   board: boardReducer
@@ -12,7 +12,7 @@ export type ActionType = BoardAction;
 
 const initialState: State = {
   board: {
-    gameBoard: generateBoard(),
+    gameBoard: getNewBoard(),
     selectedTile: null,
     isInNotesMode: false
   }

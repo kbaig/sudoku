@@ -2,7 +2,7 @@ export type TileNumberType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export type TileValue = null | TileNumberType;
 
-interface ReadOnlyTile {
+export interface ReadOnlyTile {
   type: 'readOnly';
   value: TileNumberType;
 }
