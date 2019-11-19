@@ -88,7 +88,7 @@ describe('<Tile />', () => {
     expect(wrapper.find('.tile--highlighted').length).toBe(1);
   });
 
-  it('should have .tile--same-selected if it is highlighted', () => {
+  it('should have .tile--same-selected if the same value is selected', () => {
     expect(wrapper.find('.tile--same-selected').length).toBe(0);
 
     wrapper = shallow(
