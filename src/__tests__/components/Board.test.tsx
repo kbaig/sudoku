@@ -35,17 +35,6 @@ describe('<Board />', () => {
     });
   });
 
-  it('should correctly assign isReadOnly prop to <Tile />s', () => {
-    board.forEach((row, i) => {
-      row.forEach(({ isReadOnly }, j) => {
-        const children = wrapper
-          .childAt(i * board.length + j)
-          .prop('isReadOnly');
-        expect(children).toBe(isReadOnly);
-      });
-    });
-  });
-
   it('should correctly assign onClick prop to <Tile />s', () => {
     board.forEach((row, i) => {
       row.forEach((col, j) => {
