@@ -1,0 +1,13 @@
+.erase-button {
+  cursor: pointer;
+  background: white;
+  border: 1px solid hsl(218, 20%, 79%);
+  font-size: 20px;
+  color: hsl(213, 30%, 29%);
+  transition: all 200ms ease-in-out;
+}
+
+.erase-button:hover,
+.erase-button:focus {
+  background: hsl(214, 41%, 97%);
+}

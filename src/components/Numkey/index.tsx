@@ -4,6 +4,7 @@ import { ActionType } from '../../redux';
 import { Dispatch } from 'redux';
 import { pressNumber } from '../../redux/ducks/board';
 import { connect } from 'react-redux';
+import './Numkey.css';
 
 interface Props {
   children: TileNumberType;
@@ -22,7 +23,4 @@ const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   pressNumber: (num: TileNumberType) => dispatch(pressNumber(num))
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Numkey);
+export default connect(null, mapDispatchToProps)(Numkey);

@@ -5,7 +5,7 @@ import Keypad from '../Keypad';
 
 const App: React.FC = () => {
   return (
-    <div className='App'>
+    <div className='app'>
       <Board />
       <Keypad />
     </div>
