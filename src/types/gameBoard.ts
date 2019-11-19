@@ -17,12 +17,22 @@ export interface CorrectTile {
   value: TileNumberType;
 }
 
+export interface WrongTile {
+  type: 'wrong';
+  value: TileNumberType;
+}
+
 export interface NotesTile {
   type: 'notes';
   value: Set<TileNumberType>;
 }
 
-export type TileType = ReadOnlyTile | BlankTile | CorrectTile | NotesTile;
+export type TileType =
+  | ReadOnlyTile
+  | BlankTile
+  | CorrectTile
+  | WrongTile
+  | NotesTile;
 
 export type Row = [
   TileType,

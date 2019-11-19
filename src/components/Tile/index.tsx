@@ -7,7 +7,7 @@ interface Props {
   isSelected?: boolean;
   isHighlighted?: boolean;
   onClick: () => void;
-  type: 'readOnly' | 'blank' | 'correct' | 'notes';
+  type: 'readOnly' | 'blank' | 'correct' | 'wrong' | 'notes';
   children?: TileNumberType | null | Set<TileNumberType>;
 }
 
@@ -21,6 +21,7 @@ const Tile: React.FC<Props> = ({
   const tileClassNames = classnames('tile', {
     'tile--read-only': type === 'readOnly',
     'tile--correct': type === 'correct',
+    'tile--wrong': type === 'wrong',
     'tile--notes': type === 'notes',
     'tile--selected': isSelected,
     'tile--highlighted': isHighlighted

@@ -10,9 +10,12 @@ export type State = ReturnType<typeof rootReducer>;
 
 export type ActionType = BoardAction;
 
+const { withEmptyTiles, solved } = getNewBoard();
+
 const initialState: State = {
   board: {
-    gameBoard: getNewBoard(),
+    gameBoard: withEmptyTiles,
+    solved,
     selectedTile: null,
     isInNotesMode: false
   }

@@ -1,12 +1,14 @@
-import { generateBoard, changeTileValue } from '../../util/board';
+import { changeTileValue } from '../../util/board';
 import { TileNumberType, BoardType } from '../../types/gameBoard';
 import { Reducer } from 'redux';
+import { getNewBoard } from '../../util/generateBoard';
 
 //types
 export type SelectedTile = null | [number, number];
 
 export interface BoardState {
   gameBoard: BoardType;
+  solved: BoardType;
   selectedTile: SelectedTile;
   isInNotesMode: boolean;
 }
@@ -61,9 +63,12 @@ export const toggleNoptes = (): BoardAction => ({
   type: TOGGLE_NOTES_BUTTON_PRESSED
 });
 
+const generatedBoard = getNewBoard();
+
 // default state
 const defaultState: BoardState = {
-  gameBoard: generateBoard(),
+  gameBoard: generatedBoard.withEmptyTiles,
+  solved: generatedBoard.solved,
   selectedTile: null,
   isInNotesMode: false
 };
@@ -89,6 +94,8 @@ const reducer: Reducer<BoardState, BoardAction> = (
           gameBoard[row][column] = changeTileValue(
             prevTileState,
             action.payload,
+            [row, column],
+            state.solved,
             state.isInNotesMode
           );
           return { ...state, gameBoard };
@@ -107,6 +114,8 @@ const reducer: Reducer<BoardState, BoardAction> = (
           gameBoard[row][column] = changeTileValue(
             prevTileState,
             null,
+            [row, column],
+            state.solved,
             state.isInNotesMode
           );
           return { ...state, gameBoard };

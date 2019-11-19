@@ -182,7 +182,18 @@ export const subtractNTiles = (
   throw new Error(`Couldn't find a subtraction with one solution`);
 };
 
-export const getNewBoard = (): BoardType =>
-  subtractNTiles(generateBoard(), 40).map(row =>
-    row.map(value => ({ type: value ? 'readOnly' : 'blank', value }))
-  ) as BoardType;
+export const getNewBoard = (): {
+  withEmptyTiles: BoardType;
+  solved: BoardType;
+} => {
+  const board = generateBoard();
+
+  return {
+    solved: board.map(row =>
+      row.map(value => ({ type: value ? 'readOnly' : 'blank', value }))
+    ) as BoardType,
+    withEmptyTiles: subtractNTiles(board, 40).map(row =>
+      row.map(value => ({ type: value ? 'readOnly' : 'blank', value }))
+    ) as BoardType
+  };
+};

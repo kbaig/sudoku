@@ -5,7 +5,8 @@ import {
   NotesTile,
   TileValue,
   BlankTile,
-  TileNumberType
+  TileNumberType,
+  WrongTile
 } from '../types/gameBoard';
 
 export const generateBoard = (): BoardType =>
@@ -53,10 +54,12 @@ export const isInSameSquare = (
 };
 
 export function changeTileValue(
-  tile: BlankTile | CorrectTile | NotesTile,
+  tile: BlankTile | CorrectTile | WrongTile | NotesTile,
   value: TileValue,
+  [row, col]: [number, number],
+  solvedBoard: BoardType,
   isInNotesMode?: boolean
-): BlankTile | CorrectTile | NotesTile {
+): BlankTile | CorrectTile | WrongTile | NotesTile {
   // return NotesTile if in notes mode
   if (isInNotesMode) {
     let newValue: Set<TileNumberType>;
@@ -69,8 +72,6 @@ export function changeTileValue(
     } else {
       newValue = new Set();
     }
-
-    console.log(newValue);
 
     return {
       ...tile,
@@ -85,10 +86,10 @@ export function changeTileValue(
       value
     };
   } else {
-    // return CorrectTile
+    // evaluate if value is correct or not
     return {
       ...tile,
-      type: 'correct',
+      type: solvedBoard[row][col].value === value ? 'correct' : 'wrong',
       value
     };
   }
