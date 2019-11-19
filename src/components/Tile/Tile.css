@@ -1,41 +1,41 @@
 .tile {
   cursor: pointer;
   display: flex;
-  border-right: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
+  border-right: 1px solid hsl(218, 20%, 79%);
+  border-bottom: 1px solid hsl(218, 20%, 79%);
   justify-content: center;
   align-items: center;
   font-size: 25px;
 }
 
 .tile:nth-child(3n) {
-  border-right: 2px solid #333;
+  border-right: 2px solid hsl(213, 30%, 29%);
 }
 
 .tile:nth-child(9n + 1) {
-  border-left: 2px solid #333;
+  border-left: 2px solid hsl(213, 30%, 29%);
 }
 
 .tile:nth-child(n + 19):nth-child(-n + 27),
 .tile:nth-child(n + 46):nth-child(-n + 54),
 .tile:nth-child(n + 73):nth-child(-n + 81) {
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid hsl(213, 30%, 29%);
 }
 
 .tile:nth-child(n):nth-child(-n + 9) {
-  border-top: 2px solid #333;
+  border-top: 2px solid hsl(213, 30%, 29%);
 }
 
 .tile--read-only {
-  color: black;
+  color: hsl(213, 30%, 29%);
 }
 
 .tile--correct {
-  color: blue;
+  color: hsla(212, 72%, 59%, 1);
 }
 
 .tile--wrong {
-  color: red;
+  color: hsla(359, 96%, 61%, 1);
 }
 
 .tile--notes {
@@ -49,9 +49,9 @@
 
 /* preserve order between highlighted selected for specificity */
 .tile.tile--highlighted {
-  background: lightgrey;
+  background: hsla(213, 23%, 91%, 1);
 }
 
 .tile.tile--selected {
-  background: lightblue;
+  background: hsla(207, 89%, 86%, 1);
 }
