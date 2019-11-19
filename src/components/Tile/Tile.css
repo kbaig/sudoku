@@ -1,10 +1,32 @@
 .tile {
   cursor: pointer;
-  border: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 25px;
+}
+
+.tile {
+  border-right: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+}
+
+.tile:nth-child(3n) {
+  border-right: 2px solid #333;
+}
+
+.tile:nth-child(9n + 1) {
+  border-left: 2px solid #333;
+}
+
+.tile:nth-child(n + 19):nth-child(-n + 27),
+.tile:nth-child(n + 46):nth-child(-n + 54),
+.tile:nth-child(n + 73):nth-child(-n + 81) {
+  border-bottom: 2px solid #333;
+}
+
+.tile:nth-child(n):nth-child(-n + 9) {
+  border-top: 2px solid #333;
 }
 
 .tile--read-only {
