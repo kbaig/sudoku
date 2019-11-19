@@ -32,11 +32,15 @@
 }
 
 .tile.tile--highlighted {
-  background: hsla(213, 23%, 91%, 1);
+  background: hsl(213, 23%, 91%);
 }
 
 .tile.tile--same-selected {
   background: hsl(212, 49%, 86%);
+}
+
+.tile.tile--same-incorrectly-used {
+  background: hsl(350, 71%, 89%);
 }
 
 .tile.tile--read-only {
@@ -44,12 +48,12 @@
 }
 
 .tile.tile--correct {
-  color: hsla(212, 72%, 59%, 1);
+  color: hsl(212, 72%, 59%);
 }
 
 .tile.tile--wrong {
   background: hsl(350, 71%, 89%);
-  color: hsla(359, 96%, 61%, 1);
+  color: hsl(359, 96%, 61%);
 }
 
 .tile--notes {
@@ -62,5 +66,5 @@
 }
 
 .tile.tile--selected {
-  background: hsla(207, 89%, 86%, 1);
+  background: hsl(207, 89%, 86%);
 }

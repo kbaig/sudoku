@@ -7,6 +7,7 @@ interface Props {
   isSelected?: boolean;
   isHighlighted?: boolean;
   sameIsSelected?: boolean;
+  sameIsIncorrectlyUsed?: boolean;
   onClick: () => void;
   type: 'readOnly' | 'blank' | 'correct' | 'wrong' | 'notes';
   children?: TileNumberType | null | Set<TileNumberType>;
@@ -17,6 +18,7 @@ const Tile: React.FC<Props> = ({
   isSelected,
   isHighlighted,
   sameIsSelected,
+  sameIsIncorrectlyUsed,
   onClick,
   children
 }) => {
@@ -27,7 +29,8 @@ const Tile: React.FC<Props> = ({
     'tile--notes': type === 'notes',
     'tile--selected': isSelected,
     'tile--highlighted': isHighlighted,
-    'tile--same-selected': sameIsSelected
+    'tile--same-selected': sameIsSelected,
+    'tile--same-incorrectly-used': sameIsIncorrectlyUsed
   });
 
   return (

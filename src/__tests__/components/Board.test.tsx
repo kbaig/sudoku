@@ -7,6 +7,7 @@ import {
   isInSameSquare
 } from '../../util/board';
 import Tile from '../../components/Tile';
+import { BoardType } from '../../types/gameBoard';
 
 describe('<Board />', () => {
   let wrapper: ShallowWrapper;
@@ -124,6 +125,90 @@ describe('<Board />', () => {
           typeof board[i][j].value === 'number' &&
             !(i === selectedRow && j === selectedCol) &&
             board[i][j].value === board[selectedRow][selectedCol].value
+        );
+      });
+    });
+  });
+
+  it('should correctly assign sameIsIncorrectlyUsed prop to <Tile />s', () => {
+    expect(wrapper.find({ sameIsIncorrectlyUsed: true }).length).toBe(0);
+
+    const wrongRow = 0;
+    const wrongCol = 0;
+
+    const boardWithWrongValue = [...board.map(row => [...row])] as BoardType;
+
+    boardWithWrongValue[wrongRow][wrongCol] = {
+      type: 'wrong',
+      value: 2
+    };
+
+    wrapper = shallow(
+      <Board
+        gameBoard={boardWithWrongValue}
+        selectedTile={null}
+        selectTile={selectTile}
+      />
+    );
+
+    const rowCoords = boardWithWrongValue[wrongRow].map(
+      (_, col) => `${wrongRow},${col}`
+    );
+    const colCoords = boardWithWrongValue.map((_, row) => `${row},${wrongCol}`);
+
+    const topRow = Math.floor(wrongRow / 3) * 3;
+    const leftCol = Math.floor(wrongCol / 3) * 3;
+    const innerSquareCoords = boardWithWrongValue
+      .slice(topRow, topRow + 3)
+      .map((row, i) =>
+        row
+          .slice(leftCol, leftCol + 3)
+          .map((col, j) => `${i + topRow},${j + leftCol}`)
+      )
+      .reduce((a, b) => a.concat(b));
+
+    const sameContextCoords = new Set([
+      ...rowCoords,
+      ...colCoords,
+      ...innerSquareCoords
+    ]);
+    sameContextCoords.delete(`${wrongRow},${wrongCol}`);
+
+    const sameValCount = Array.from(sameContextCoords).reduce(
+      (sameValCount, coords) => {
+        const [row, col] = coords.split(',').map(s => parseInt(s));
+        const { value } = boardWithWrongValue[row][col];
+
+        return typeof value === 'number' &&
+          value === boardWithWrongValue[wrongRow][wrongCol].value
+          ? sameValCount + 1
+          : sameValCount;
+      },
+      0
+    );
+
+    expect(wrapper.find({ sameIsIncorrectlyUsed: true }).length).toBe(
+      sameValCount
+    );
+
+    boardWithWrongValue.forEach((row, i) => {
+      row.forEach((col, j) => {
+        expect(
+          wrapper
+            .childAt(i * boardWithWrongValue.length + j)
+            .prop('sameIsIncorrectlyUsed')
+        ).toBe(
+          typeof boardWithWrongValue[i][j].value === 'number' &&
+            !(i === wrongRow && j === wrongCol) &&
+            (i === wrongRow ||
+              j === wrongCol ||
+              isInSameSquare(
+                [i, j],
+                [wrongRow, wrongCol],
+                boardWithWrongValue
+              )) &&
+            boardWithWrongValue[i][j].value ===
+              boardWithWrongValue[wrongRow][wrongCol].value
         );
       });
     });

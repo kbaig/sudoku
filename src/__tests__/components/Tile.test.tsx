@@ -112,7 +112,19 @@ describe('<Tile />', () => {
     expect(wrapper.find('.tile--read-only').length).toBe(1);
   });
 
-  it('should only have .tile--correct if it is read only', () => {
+  it('should only have .tile--same-incorrectly-used if there is another tile of the same value incorrectly used in the same row, column, or inner square', () => {
+    expect(wrapper.find('.tile--same-incorrectly-used').length).toBe(0);
+
+    wrapper = shallow(
+      <Tile type='readOnly' sameIsIncorrectlyUsed onClick={handleClick}>
+        {children}
+      </Tile>
+    );
+
+    expect(wrapper.find('.tile--same-incorrectly-used').length).toBe(1);
+  });
+
+  it('should only have .tile--correct if it is correct', () => {
     wrapper = shallow(<Tile type='blank' onClick={handleClick} />);
 
     expect(wrapper.find('.tile--correct').length).toBe(0);
