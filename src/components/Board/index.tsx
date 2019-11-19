@@ -19,6 +19,12 @@ export const Board: React.FC<Props> = ({
   selectedTile,
   selectTile
 }) => {
+  const selectedValue =
+    selectedTile &&
+    gameBoard[selectedTile[0]][selectedTile[1]] &&
+    gameBoard[selectedTile[0]][selectedTile[1]].value;
+  const valueIsNumber = typeof selectedValue === 'number';
+
   return (
     <div className='board'>
       {gameBoard.map((row, i) => (
@@ -36,6 +42,12 @@ export const Board: React.FC<Props> = ({
                 (selectedTile[0] === i ||
                   selectedTile[1] === j ||
                   isInSameSquare([i, j], selectedTile, gameBoard))
+              }
+              sameIsSelected={
+                !!selectedTile &&
+                valueIsNumber &&
+                !(i === selectedTile[0] && j === selectedTile[1]) &&
+                value === selectedValue
               }
             >
               {value}

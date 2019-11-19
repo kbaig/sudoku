@@ -88,6 +88,18 @@ describe('<Tile />', () => {
     expect(wrapper.find('.tile--highlighted').length).toBe(1);
   });
 
+  it('should have .tile--same-selected if it is highlighted', () => {
+    expect(wrapper.find('.tile--same-selected').length).toBe(0);
+
+    wrapper = shallow(
+      <Tile type='readOnly' sameIsSelected onClick={handleClick}>
+        {children}
+      </Tile>
+    );
+
+    expect(wrapper.find('.tile--same-selected').length).toBe(1);
+  });
+
   it('should only have .tile--read-only if it is read only', () => {
     expect(wrapper.find('.tile--read-only').length).toBe(0);
 

@@ -85,4 +85,47 @@ describe('<Board />', () => {
       });
     });
   });
+
+  it('should correctly assign sameIsSelected prop to <Tile />s', () => {
+    expect(wrapper.find({ sameIsSelected: true }).length).toBe(0);
+
+    const selectedRow = 0;
+    const selectedCol = 3;
+
+    wrapper = shallow(
+      <Board
+        gameBoard={board}
+        selectedTile={[selectedRow, selectedCol]}
+        selectTile={selectTile}
+      />
+    );
+
+    expect(wrapper.find({ sameIsSelected: true }).length).toBe(
+      board.reduce(
+        (a, b) =>
+          a +
+          b.reduce(
+            (a, b) =>
+              typeof b.value === 'number' &&
+              b.value === board[selectedRow][selectedCol].value
+                ? a + 1
+                : a,
+            0
+          ),
+        0
+      ) - 1
+    );
+
+    board.forEach((row, i) => {
+      row.forEach((col, j) => {
+        expect(
+          wrapper.childAt(i * board.length + j).prop('sameIsSelected')
+        ).toBe(
+          typeof board[i][j].value === 'number' &&
+            !(i === selectedRow && j === selectedCol) &&
+            board[i][j].value === board[selectedRow][selectedCol].value
+        );
+      });
+    });
+  });
 });

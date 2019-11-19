@@ -35,6 +35,10 @@
   background: hsla(213, 23%, 91%, 1);
 }
 
+.tile.tile--same-selected {
+  background: hsl(212, 49%, 86%);
+}
+
 .tile.tile--read-only {
   color: hsl(213, 30%, 29%);
 }

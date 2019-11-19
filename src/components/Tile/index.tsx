@@ -6,6 +6,7 @@ import { TileNumberType } from '../../types/gameBoard';
 interface Props {
   isSelected?: boolean;
   isHighlighted?: boolean;
+  sameIsSelected?: boolean;
   onClick: () => void;
   type: 'readOnly' | 'blank' | 'correct' | 'wrong' | 'notes';
   children?: TileNumberType | null | Set<TileNumberType>;
@@ -15,6 +16,7 @@ const Tile: React.FC<Props> = ({
   type,
   isSelected,
   isHighlighted,
+  sameIsSelected,
   onClick,
   children
 }) => {
@@ -24,7 +26,8 @@ const Tile: React.FC<Props> = ({
     'tile--wrong': type === 'wrong',
     'tile--notes': type === 'notes',
     'tile--selected': isSelected,
-    'tile--highlighted': isHighlighted
+    'tile--highlighted': isHighlighted,
+    'tile--same-selected': sameIsSelected
   });
 
   return (
