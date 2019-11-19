@@ -8,6 +8,11 @@
   font-size: 25px;
 }
 
+.tile:hover,
+.tile:focus {
+  background: hsl(210, 100%, 93%);
+}
+
 .tile:nth-child(3n) {
   border-right: 2px solid hsl(213, 30%, 29%);
 }
