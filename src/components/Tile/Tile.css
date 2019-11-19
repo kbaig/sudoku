@@ -31,15 +31,20 @@
   border-top: 2px solid hsl(213, 30%, 29%);
 }
 
-.tile--read-only {
+.tile.tile--highlighted {
+  background: hsla(213, 23%, 91%, 1);
+}
+
+.tile.tile--read-only {
   color: hsl(213, 30%, 29%);
 }
 
-.tile--correct {
+.tile.tile--correct {
   color: hsla(212, 72%, 59%, 1);
 }
 
-.tile--wrong {
+.tile.tile--wrong {
+  background: hsl(350, 71%, 89%);
   color: hsla(359, 96%, 61%, 1);
 }
 
@@ -50,11 +55,6 @@
   place-items: center;
   font-size: 12px;
   color: #333;
-}
-
-/* preserve order between highlighted selected for specificity */
-.tile.tile--highlighted {
-  background: hsla(213, 23%, 91%, 1);
 }
 
 .tile.tile--selected {
