@@ -1,14 +1,11 @@
 .tile {
   cursor: pointer;
   display: flex;
+  border-right: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
   justify-content: center;
   align-items: center;
   font-size: 25px;
-}
-
-.tile {
-  border-right: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
 }
 
 .tile:nth-child(3n) {
