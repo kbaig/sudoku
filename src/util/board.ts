@@ -189,23 +189,34 @@ export const evaluateContext = (
   const shouldAnimateInnerSquare = innerSquareTiles.every(row =>
     row.every(isCorrectValue)
   );
-  innerSquareTiles.forEach((tileRow, i) =>
-    tileRow.forEach((tile, j) => {
-      if (tile.type === 'readOnly' || tile.type === 'correct') {
-        gameBoard[topRow + i][leftCol + j] = {
-          ...tile,
-          animationDelay: shouldAnimateInnerSquare
-            ? 50 + j * 50 + i * 150
-            : null
-        };
-      } else {
-        gameBoard[topRow + i][leftCol + j] = {
-          ...tile,
-          animationDelay: null
-        };
-      }
-    })
-  );
+  if (shouldAnimateInnerSquare) {
+    innerSquareTiles.forEach((tileRow, i) =>
+      tileRow.forEach((tile, j) => {
+        // rechecking as a type guard because TS is complaining
+        if (tile.type === 'readOnly' || tile.type === 'correct') {
+          gameBoard[topRow + i][leftCol + j] = {
+            ...tile,
+            animationDelay: 50 + j * 50 + i * 150
+          };
+        }
+      })
+    );
+  } else {
+    innerSquareTiles.forEach((tileRow, i) =>
+      tileRow.forEach((tile, j) => {
+        // don't override animation from a row or column being completed
+        if (
+          !(topRow + i === row && shouldAnimateRow) &&
+          !(leftCol + j === col && shouldAnimateColumn)
+        ) {
+          gameBoard[topRow + i][leftCol + j] = {
+            ...tile,
+            animationDelay: null
+          };
+        }
+      })
+    );
+  }
 
   return gameBoard;
 };
