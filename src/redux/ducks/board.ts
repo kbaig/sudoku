@@ -1,11 +1,8 @@
-import {
-  changeTileValue,
-  processNotesAfterNumClick,
-  evaluateContext
-} from '../../util/board';
+import { changeTileValue, processNotesAfterNumClick } from '../../util/board';
 import { TileNumberType, BoardType } from '../../types/gameBoard';
 import { Reducer } from 'redux';
 import { getNewBoard } from '../../util/generateBoard';
+import { evaluateContext } from '../../util/evalutateContext';
 
 //types
 export type SelectedTile = null | [number, number];
