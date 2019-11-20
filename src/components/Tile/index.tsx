@@ -8,6 +8,7 @@ interface Props {
   isHighlighted?: boolean;
   sameIsSelected?: boolean;
   sameIsIncorrectlyUsed?: boolean;
+  animationDelay?: null | number;
   onClick: () => void;
   type: 'readOnly' | 'blank' | 'correct' | 'wrong' | 'notes';
   children?: TileNumberType | null | Set<TileNumberType>;
@@ -19,6 +20,7 @@ const Tile: React.FC<Props> = ({
   isHighlighted,
   sameIsSelected,
   sameIsIncorrectlyUsed,
+  animationDelay,
   onClick,
   children
 }) => {
@@ -30,11 +32,18 @@ const Tile: React.FC<Props> = ({
     'tile--selected': isSelected,
     'tile--highlighted': isHighlighted,
     'tile--same-selected': sameIsSelected,
-    'tile--same-incorrectly-used': sameIsIncorrectlyUsed
+    'tile--same-incorrectly-used': sameIsIncorrectlyUsed,
+    'tile--animate': !!animationDelay
   });
 
   return (
-    <div className={tileClassNames} onClick={onClick}>
+    <div
+      className={tileClassNames}
+      onClick={onClick}
+      style={{
+        animationDelay: `${animationDelay}ms`
+      }}
+    >
       {children instanceof Set
         ? Array.from(children as Set<TileNumberType>)
             .sort((a, b) => a - b)

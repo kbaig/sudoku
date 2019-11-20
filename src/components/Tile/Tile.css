@@ -68,3 +68,13 @@
 .tile.tile--selected {
   background: hsl(207, 89%, 86%);
 }
+
+@keyframes complete {
+  50% {
+    background-color: hsl(212, 39%, 76%);
+  }
+}
+
+.tile.tile--animate {
+  animation: complete 300ms cubic-bezier(0, 0.5, 1, 0.5);
+}

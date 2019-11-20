@@ -1,4 +1,8 @@
-import { changeTileValue, processNotesAfterNumClick } from '../../util/board';
+import {
+  changeTileValue,
+  processNotesAfterNumClick,
+  evaluateContext
+} from '../../util/board';
 import { TileNumberType, BoardType } from '../../types/gameBoard';
 import { Reducer } from 'redux';
 import { getNewBoard } from '../../util/generateBoard';
@@ -98,6 +102,9 @@ const reducer: Reducer<BoardState, BoardAction> = (
             state.solved,
             state.isInNotesMode
           );
+
+          evaluateContext(gameBoard, [row, column]);
+
           return {
             ...state,
             gameBoard: state.isInNotesMode
@@ -123,6 +130,9 @@ const reducer: Reducer<BoardState, BoardAction> = (
             state.solved,
             state.isInNotesMode
           );
+
+          evaluateContext(gameBoard, [row, column]);
+
           return { ...state, gameBoard };
         }
       }

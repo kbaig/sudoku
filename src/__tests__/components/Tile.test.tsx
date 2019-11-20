@@ -150,6 +150,23 @@ describe('<Tile />', () => {
     expect(wrapper.find('.tile--notes').length).toBe(1);
   });
 
+  it('should only have .tile--animate if it has animationDelay', () => {
+    expect(wrapper.find('.tile--animate').length).toBe(0);
+
+    const delay = 200;
+
+    wrapper = shallow(
+      <Tile type='readOnly' animationDelay={delay} onClick={handleClick}>
+        {children}
+      </Tile>
+    );
+
+    expect(wrapper.find('.tile--animate').length).toBe(1);
+    expect(wrapper.find('.tile--animate').prop('style')).toEqual({
+      animationDelay: `${delay}ms`
+    });
+  });
+
   it('should call the passed click handler on click', () => {
     wrapper.find('.tile').simulate('click');
     expect(handleClick).toHaveBeenCalledTimes(1);

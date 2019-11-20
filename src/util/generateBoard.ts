@@ -190,10 +190,18 @@ export const getNewBoard = (): {
 
   return {
     solved: board.map(row =>
-      row.map(value => ({ type: value ? 'readOnly' : 'blank', value }))
+      row.map(value => ({
+        type: value ? 'readOnly' : 'blank',
+        value,
+        animationDelay: null
+      }))
     ) as BoardType,
     withEmptyTiles: subtractNTiles(board, 40).map(row =>
-      row.map(value => ({ type: value ? 'readOnly' : 'blank', value }))
+      row.map(value => ({
+        type: value ? 'readOnly' : 'blank',
+        value,
+        animationDelay: null
+      }))
     ) as BoardType
   };
 };

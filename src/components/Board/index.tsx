@@ -27,7 +27,7 @@ export const Board: React.FC<Props> = ({
     <div className='board'>
       {gameBoard.map((row, i) => (
         <React.Fragment key={i}>
-          {row.map(({ type, value }, j) => {
+          {row.map(({ type, value, animationDelay }, j) => {
             const rowCoords = gameBoard[i].map((_, j) => `${i},${j}`);
             const colCoords = gameBoard.map((_, i) => `${i},${j}`);
             const topRow = Math.floor(i / 3) * 3;
@@ -50,7 +50,7 @@ export const Board: React.FC<Props> = ({
 
             return (
               <Tile
-                key={j}
+                key={`${i},${j},${animationDelay}`}
                 type={type}
                 onClick={() => selectTile(i, j)}
                 isSelected={
@@ -82,6 +82,7 @@ export const Board: React.FC<Props> = ({
                     );
                   }
                 )}
+                animationDelay={animationDelay}
               >
                 {value}
               </Tile>

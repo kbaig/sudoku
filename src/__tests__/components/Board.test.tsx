@@ -36,6 +36,17 @@ describe('<Board />', () => {
     });
   });
 
+  it('should correctly assign animationDelay prop to <Tile />s', () => {
+    board.forEach((row, i) => {
+      row.forEach(({ value }, j) => {
+        const children = wrapper
+          .childAt(i * board.length + j)
+          .prop('animationDelay');
+        expect(children).toBe(board[i][j].animationDelay);
+      });
+    });
+  });
+
   it('should correctly assign onClick prop to <Tile />s', () => {
     board.forEach((row, i) => {
       row.forEach((col, j) => {
@@ -140,7 +151,8 @@ describe('<Board />', () => {
 
     boardWithWrongValue[wrongRow][wrongCol] = {
       type: 'wrong',
-      value: 2
+      value: 2,
+      animationDelay: null
     };
 
     wrapper = shallow(
