@@ -15,8 +15,8 @@ export const ToggleNotesButton: React.FC<Props> = ({
   isInNotesMode,
   toggleNotes
 }) => {
-  const modeStatusClasses = classnames('notes-button__mode-status', {
-    'notes-button__mode-status--on': isInNotesMode
+  const modeStatusClasses = classnames('toggle-notes-button__mode-status', {
+    'toggle-notes-button__mode-status--on': isInNotesMode
   });
 
   return (

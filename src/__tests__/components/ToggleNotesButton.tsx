@@ -22,7 +22,7 @@ describe('<ToggleNotesButton />', () => {
   });
 
   it('gives feedback on whether or not notes mode is on', () => {
-    const modeStatus = wrapper.find('.notes-button__mode-status');
+    const modeStatus = wrapper.find('.toggle-notes-button__mode-status');
 
     expect(modeStatus.text()).toBe('ON');
 
@@ -33,7 +33,9 @@ describe('<ToggleNotesButton />', () => {
       ></ToggleNotesButton>
     );
 
-    expect(wrapper.find('.notes-button__mode-status').text()).toBe('OFF');
+    expect(wrapper.find('.toggle-notes-button__mode-status').text()).toBe(
+      'OFF'
+    );
   });
 
   it('calls the toggleNotes prop on click', () => {

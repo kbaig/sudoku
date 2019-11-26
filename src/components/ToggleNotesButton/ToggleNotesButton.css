@@ -23,7 +23,7 @@
   height: 32px;
 }
 
-.notes-button__mode-status {
+.toggle-notes-button__mode-status {
   border-radius: 5px;
   background: hsl(214, 20%, 65%);
   padding: 1px 4px;
@@ -32,6 +32,6 @@
   transition: all 0.2s ease-in-out;
 }
 
-.notes-button__mode-status--on {
+.toggle-notes-button__mode-status--on {
   background: hsl(212, 72%, 59%);
 }
