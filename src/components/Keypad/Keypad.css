@@ -13,12 +13,14 @@
 }
 
 .keypad .toggle-notes-button,
+.keypad .hint-button,
 .keypad .erase-button {
   grid-column-end: span 3;
 }
 
 .keypad .toggle-notes-button {
   border-right: none;
+  border-bottom: none;
 }
 
 @media (max-width: 850px) {
@@ -33,14 +35,16 @@
     font-size: 40px;
   }
 
-  .keypad .erase-button,
-  .keypad .toggle-notes-button {
+  .keypad .toggle-notes-button,
+  .keypad .hint-button,
+  .keypad .erase-button {
     grid-row-start: 1;
-    grid-column-end: span 18;
+    grid-column-end: span 12;
   }
 
   .keypad .numkey,
   .keypad .erase-button,
+  .keypad .hint-button,
   .keypad .toggle-notes-button {
     border: none;
   }

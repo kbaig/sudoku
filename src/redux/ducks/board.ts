@@ -17,8 +17,9 @@ export interface BoardState {
 // actions
 const TILE_SELECTED = 'TILE_SELECTED';
 const NUMBER_PRESSED = 'NUMBER_PRESSED';
-const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
 const TOGGLE_NOTES_BUTTON_PRESSED = 'TOGGLE_NOTES_BUTTON_PRESSED';
+const HINT_BUTTON_PRESSED = 'HINT_BUTTON_PRESSED';
+const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
 
 // action creators
 interface SelectTileAction {
@@ -34,19 +35,24 @@ interface PressNumberAction {
   payload: TileNumberType;
 }
 
-interface EraseTileAction {
-  type: typeof ERASE_BUTTON_PRESSED;
-}
-
 interface ToggleNotesAction {
   type: typeof TOGGLE_NOTES_BUTTON_PRESSED;
+}
+
+interface GetHintAction {
+  type: typeof HINT_BUTTON_PRESSED;
+}
+
+interface EraseTileAction {
+  type: typeof ERASE_BUTTON_PRESSED;
 }
 
 export type BoardAction =
   | PressNumberAction
   | SelectTileAction
-  | EraseTileAction
-  | ToggleNotesAction;
+  | ToggleNotesAction
+  | GetHintAction
+  | EraseTileAction;
 
 export const selectTile = (row: number, column: number): SelectTileAction => ({
   type: TILE_SELECTED,
@@ -58,11 +64,13 @@ export const pressNumber = (num: TileNumberType): BoardAction => ({
   payload: num
 });
 
-export const eraseTile = (): BoardAction => ({ type: ERASE_BUTTON_PRESSED });
-
 export const toggleNoptes = (): BoardAction => ({
   type: TOGGLE_NOTES_BUTTON_PRESSED
 });
+
+export const getHint = (): BoardAction => ({ type: HINT_BUTTON_PRESSED });
+
+export const eraseTile = (): BoardAction => ({ type: ERASE_BUTTON_PRESSED });
 
 const generatedBoard = getNewBoard();
 
@@ -136,6 +144,22 @@ const reducer: Reducer<BoardState, BoardAction> = (
       return state;
     case TOGGLE_NOTES_BUTTON_PRESSED:
       return { ...state, isInNotesMode: !state.isInNotesMode };
+    case HINT_BUTTON_PRESSED:
+      const { selectedTile, gameBoard, solved } = state;
+      if (selectedTile) {
+        const [row, col] = selectedTile;
+        gameBoard[row][col] = { ...solved[row][col] };
+
+        evaluateContext(gameBoard, [row, col]);
+
+        return {
+          ...state,
+          gameBoard: [...gameBoard]
+        };
+      } else {
+        return state;
+      }
+
     default:
       return state;
   }
