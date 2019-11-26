@@ -12,6 +12,7 @@ export interface BoardState {
   solved: BoardType;
   selectedTile: SelectedTile;
   isInNotesMode: boolean;
+  isPaused: boolean;
 }
 
 // actions
@@ -20,6 +21,7 @@ const NUMBER_PRESSED = 'NUMBER_PRESSED';
 const TOGGLE_NOTES_BUTTON_PRESSED = 'TOGGLE_NOTES_BUTTON_PRESSED';
 const HINT_BUTTON_PRESSED = 'HINT_BUTTON_PRESSED';
 const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
+const PAUSE_PLAY_BUTTON_PRESSED = 'PAUSE_PLAY_BUTTON_PRESSED';
 
 // action creators
 interface SelectTileAction {
@@ -47,12 +49,17 @@ interface EraseTileAction {
   type: typeof ERASE_BUTTON_PRESSED;
 }
 
+interface TogglePauseAction {
+  type: typeof PAUSE_PLAY_BUTTON_PRESSED;
+}
+
 export type BoardAction =
   | PressNumberAction
   | SelectTileAction
   | ToggleNotesAction
   | GetHintAction
-  | EraseTileAction;
+  | EraseTileAction
+  | TogglePauseAction;
 
 export const selectTile = (row: number, column: number): SelectTileAction => ({
   type: TILE_SELECTED,
@@ -72,6 +79,10 @@ export const getHint = (): BoardAction => ({ type: HINT_BUTTON_PRESSED });
 
 export const eraseTile = (): BoardAction => ({ type: ERASE_BUTTON_PRESSED });
 
+export const togglePause = (): BoardAction => ({
+  type: PAUSE_PLAY_BUTTON_PRESSED
+});
+
 const generatedBoard = getNewBoard();
 
 // default state
@@ -79,7 +90,8 @@ const defaultState: BoardState = {
   gameBoard: generatedBoard.withEmptyTiles,
   solved: generatedBoard.solved,
   selectedTile: null,
-  isInNotesMode: false
+  isInNotesMode: false,
+  isPaused: false
 };
 
 // reducer
@@ -159,7 +171,8 @@ const reducer: Reducer<BoardState, BoardAction> = (
       } else {
         return state;
       }
-
+    case PAUSE_PLAY_BUTTON_PRESSED:
+      return { ...state, isPaused: !state.isPaused };
     default:
       return state;
   }

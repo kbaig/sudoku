@@ -17,7 +17,8 @@ const initialState: State = {
     gameBoard: withEmptyTiles,
     solved,
     selectedTile: null,
-    isInNotesMode: false
+    isInNotesMode: false,
+    isPaused: false
   }
 };
 
