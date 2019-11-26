@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import './ToggleNotesButton.css';
 import { State } from '../../redux';
 import classnames from 'classnames';
+import { TiPencil } from 'react-icons/ti';
 
 interface Props {
   isInNotesMode: boolean;
@@ -20,6 +21,7 @@ export const ToggleNotesButton: React.FC<Props> = ({
 
   return (
     <button className='toggle-notes-button' onClick={() => toggleNotes()}>
+      <TiPencil />
       Notes
       <span className={modeStatusClasses}>{isInNotesMode ? 'ON' : 'OFF'}</span>
     </button>
