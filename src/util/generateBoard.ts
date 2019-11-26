@@ -191,7 +191,7 @@ export const getNewBoard = (): {
   return {
     solved: board.map(row =>
       row.map(value => ({
-        type: value ? 'readOnly' : 'blank',
+        type: 'readOnly',
         value,
         animationDelay: null
       }))
