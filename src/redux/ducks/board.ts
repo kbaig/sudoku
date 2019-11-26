@@ -64,7 +64,7 @@ export const pressNumber = (num: TileNumberType): BoardAction => ({
   payload: num
 });
 
-export const toggleNoptes = (): BoardAction => ({
+export const toggleNotes = (): BoardAction => ({
   type: TOGGLE_NOTES_BUTTON_PRESSED
 });
 

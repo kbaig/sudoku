@@ -1,5 +1,5 @@
 import React from 'react';
-import { toggleNoptes } from '../../redux/ducks/board';
+import { toggleNotes } from '../../redux/ducks/board';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import './ToggleNotesButton.css';
@@ -17,7 +17,7 @@ export const ToggleNotesButton: React.FC<Props> = ({ toggleNotes }) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  toggleNotes: () => dispatch(toggleNoptes())
+  toggleNotes: () => dispatch(toggleNotes())
 });
 
 export default connect(null, mapDispatchToProps)(ToggleNotesButton);
