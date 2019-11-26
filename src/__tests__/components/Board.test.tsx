@@ -147,7 +147,7 @@ describe('<Board />', () => {
     const wrongRow = 0;
     const wrongCol = 0;
 
-    const boardWithWrongValue = [...board.map(row => [...row])] as BoardType;
+    const boardWithWrongValue = [...board.map(row => [...row])];
 
     boardWithWrongValue[wrongRow][wrongCol] = {
       type: 'wrong',

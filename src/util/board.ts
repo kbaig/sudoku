@@ -26,7 +26,7 @@ export const generateBoard = (): BoardType =>
         };
       }
     })
-  ) as BoardType;
+  );
 
 export const getBoardLength = (board: BoardType) =>
   board.reduce((total, row) => total + row.length, 0);
@@ -142,5 +142,5 @@ export const processNotesAfterNumClick = (
     }
   });
 
-  return boardCopy as BoardType;
+  return boardCopy;
 };

@@ -39,16 +39,6 @@ export type TileType =
   | WrongTile
   | NotesTile;
 
-export type Row = [
-  TileType,
-  TileType,
-  TileType,
-  TileType,
-  TileType,
-  TileType,
-  TileType,
-  TileType,
-  TileType
-];
+export type Row = TileType[];
 
-export type BoardType = [Row, Row, Row, Row, Row, Row, Row, Row, Row];
+export type BoardType = Row[];
