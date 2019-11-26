@@ -10,12 +10,30 @@ describe('<ToggleNotesButton />', () => {
   beforeEach(
     () =>
       (wrapper = shallow(
-        <ToggleNotesButton toggleNotes={toggleNotes}></ToggleNotesButton>
+        <ToggleNotesButton
+          isInNotesMode
+          toggleNotes={toggleNotes}
+        ></ToggleNotesButton>
       ))
   );
 
   it('renders children a button', () => {
     expect(wrapper.find('button').length).toBe(1);
+  });
+
+  it('gives feedback on whether or not notes mode is on', () => {
+    const modeStatus = wrapper.find('.notes-button__mode-status');
+
+    expect(modeStatus.text()).toBe('ON');
+
+    wrapper = shallow(
+      <ToggleNotesButton
+        isInNotesMode={false}
+        toggleNotes={toggleNotes}
+      ></ToggleNotesButton>
+    );
+
+    expect(wrapper.find('.notes-button__mode-status').text()).toBe('OFF');
   });
 
   it('calls the toggleNotes prop on click', () => {
