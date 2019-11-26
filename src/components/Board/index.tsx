@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import Tile from '../Tile';
 import './Board.css';
 import { BoardType } from '../../types/gameBoard';
-import { State, ActionType } from '../../redux';
-import { Dispatch } from 'redux';
+import { State } from '../../redux';
 import { isInSameSquare } from '../../util/board';
 import { SelectedTile, selectTile } from '../../redux/ducks/board';
 
@@ -99,8 +98,4 @@ const mapStateToProps = ({ board: { gameBoard, selectedTile } }: State) => ({
   selectedTile
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  selectTile: (row: number, column: number) => dispatch(selectTile(row, column))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default connect(mapStateToProps, { selectTile })(Board);

@@ -1,7 +1,5 @@
 import React from 'react';
 import { TileNumberType } from '../../types/gameBoard';
-import { ActionType } from '../../redux';
-import { Dispatch } from 'redux';
 import { pressNumber } from '../../redux/ducks/board';
 import { connect } from 'react-redux';
 import './Numkey.css';
@@ -19,8 +17,4 @@ export const Numkey: React.FC<Props> = ({ pressNumber, children }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  pressNumber: (num: TileNumberType) => dispatch(pressNumber(num))
-});
-
-export default connect(null, mapDispatchToProps)(Numkey);
+export default connect(null, { pressNumber })(Numkey);

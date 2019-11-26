@@ -1,7 +1,6 @@
 import React from 'react';
 import { toggleNotes } from '../../redux/ducks/board';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import './ToggleNotesButton.css';
 
 interface Props {
@@ -16,8 +15,4 @@ export const ToggleNotesButton: React.FC<Props> = ({ toggleNotes }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  toggleNotes: () => dispatch(toggleNotes())
-});
-
-export default connect(null, mapDispatchToProps)(ToggleNotesButton);
+export default connect(null, { toggleNotes })(ToggleNotesButton);

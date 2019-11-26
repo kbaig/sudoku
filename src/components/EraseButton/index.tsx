@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { eraseTile } from '../../redux/ducks/board';
 import './EraseButton.css';
 
@@ -16,8 +15,4 @@ export const EraseButton: React.FC<Props> = ({ eraseTile }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  eraseTile: () => dispatch(eraseTile())
-});
-
-export default connect(null, mapDispatchToProps)(EraseButton);
+export default connect(null, { eraseTile })(EraseButton);
