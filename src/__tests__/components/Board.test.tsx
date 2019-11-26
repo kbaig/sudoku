@@ -1,18 +1,14 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Board } from '../../components/Board';
-import {
-  generateBoard,
-  getBoardLength,
-  isInSameSquare
-} from '../../util/board';
+import { getBoardLength, isInSameSquare } from '../../util/board';
 import Tile from '../../components/Tile';
-import { BoardType } from '../../types/gameBoard';
+import { generateMockBoard } from '../../util/generateMockBoard';
 
 describe('<Board />', () => {
   let wrapper: ShallowWrapper;
 
-  const board = generateBoard();
+  const board = generateMockBoard();
   const boardLength = getBoardLength(board);
   const selectTile = jest.fn();
 
