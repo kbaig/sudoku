@@ -22,9 +22,7 @@ describe('<ToggleNotesButton />', () => {
   });
 
   it('gives feedback on whether or not notes mode is on', () => {
-    const modeStatus = wrapper.find('.toggle-notes-button__mode-status');
-
-    expect(modeStatus.text()).toBe('ON');
+    expect(wrapper.find('.toggle-notes-button__mode-status').text()).toBe('ON');
 
     wrapper = shallow(
       <ToggleNotesButton
