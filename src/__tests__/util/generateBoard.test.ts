@@ -250,19 +250,19 @@ describe('isWinnable', () => {
   });
 
   it('can handle emptier boards', () => {
-    // expect(
-    //   isWinnable([
-    //     [null, 2, null, null, 4, null, 8, null, null],
-    //     [null, null, 3, null, null, 1, null, 5, null],
-    //     [8, 5, 1, 7, 2, 6, 3, 4, 9],
-    //     [null, null, 5, null, null, 9, 1, null, 2],
-    //     [2, 1, null, null, null, 8, null, 6, 4],
-    //     [null, null, null, null, 6, null, 5, 9, null],
-    //     [5, 6, 8, 9, 1, 3, 4, null, 7],
-    //     [3, 4, 2, 6, null, null, null, 1, null],
-    //     [1, 9, 7, null, null, null, 6, null, 3]
-    //   ])
-    // ).toBe(true);
+    expect(
+      isWinnable([
+        [null, 2, null, null, 4, null, 8, null, null],
+        [null, null, 3, null, null, 1, null, 5, null],
+        [8, 5, 1, 7, 2, 6, 3, 4, 9],
+        [null, null, 5, null, null, 9, 1, null, 2],
+        [2, 1, null, null, null, 8, null, 6, 4],
+        [null, null, null, null, 6, null, 5, 9, null],
+        [5, 6, 8, 9, 1, 3, 4, null, 7],
+        [3, 4, 2, 6, null, null, null, 1, null],
+        [1, 9, 7, null, null, null, 6, null, 3]
+      ])
+    ).toBe(true);
 
     expect(
       isWinnable([
@@ -278,18 +278,18 @@ describe('isWinnable', () => {
       ])
     ).toBe(true);
 
-    // expect(
-    //   isWinnable([
-    //     [null, 2, null, null, 4, null, 8, null, null],
-    //     [null, null, 3, null, null, 1, null, 5, null],
-    //     [8, 5, 1, 7, 2, 6, 3, 4, 9],
-    //     [null, null, 5, null, null, 9, 1, null, 2],
-    //     [2, 1, null, null, null, 8, null, 6, 4],
-    //     [null, null, null, null, 6, null, 5, 9, null],
-    //     [5, 6, 8, 9, 1, 3, 4, null, 7],
-    //     [3, 4, 2, 6, null, null, null, 1, null],
-    //     [1, 9, 7, null, null, null, 6, 1, 3]
-    //   ])
-    // ).toBe(false);
+    expect(
+      isWinnable([
+        [null, 2, null, null, 4, null, 8, null, null],
+        [null, null, 3, null, null, 1, null, 5, null],
+        [8, 5, 1, 7, 2, 6, 3, 4, 9],
+        [null, null, 5, null, null, 9, 1, null, 2],
+        [2, 1, null, null, null, 8, null, 6, 4],
+        [null, null, null, null, 6, null, 5, 9, null],
+        [5, 6, 8, 9, 1, 3, 4, null, 7],
+        [3, 4, 2, 6, null, null, null, 1, null],
+        [1, 9, 7, null, null, null, 6, 1, 3]
+      ])
+    ).toBe(false);
   });
 });
