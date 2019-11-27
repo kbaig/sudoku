@@ -19,7 +19,7 @@ export const PausePlayButton: React.FC<Props> = ({ isPaused, togglePause }) => {
 
   return (
     <button className={buttonClasses} onClick={() => togglePause()}>
-      {isPaused ? <IoIosPause /> : <FaPlay />}
+      {isPaused ? <FaPlay /> : <IoIosPause />}
     </button>
   );
 };
