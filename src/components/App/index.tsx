@@ -3,6 +3,7 @@ import './App.css';
 import Board from '../Board';
 import Keypad from '../Keypad';
 import PausePlayButton from '../PausePlayButton';
+import Timer from '../Timer';
 
 const App: React.FC = () => {
   return (
@@ -10,7 +11,8 @@ const App: React.FC = () => {
       <div className='top-row'>
         <div />
         <div />
-        <div>
+        <div className='timer-and-pause-button'>
+          <Timer />
           <PausePlayButton />
         </div>
       </div>

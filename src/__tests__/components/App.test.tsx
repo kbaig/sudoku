@@ -3,6 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import App from '../../components/App';
 import Board from '../../components/Board';
 import PausePlayButton from '../../components/PausePlayButton';
+import Timer from '../../components/Timer';
 
 describe('<App />', () => {
   let wrapper: ShallowWrapper;
@@ -10,6 +11,10 @@ describe('<App />', () => {
 
   it('renders a <Board />', () => {
     expect(wrapper.find(Board).length).toBe(1);
+  });
+
+  it('renders a <Timer />', () => {
+    expect(wrapper.find(Timer).length).toBe(1);
   });
 
   it('renders a <PausePlayButton />', () => {
