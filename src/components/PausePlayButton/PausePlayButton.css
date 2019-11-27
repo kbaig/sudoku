@@ -12,11 +12,11 @@
 
 .pause-play-button svg {
   color: hsl(217, 20%, 60%);
-  height: 10px;
-  width: 10px;
+  height: 18px;
+  width: 18px;
 }
 
 .pause-play-button.pause-play-button--paused svg {
-  height: 18px;
-  width: 18px;
+  height: 10px;
+  width: 10px;
 }
