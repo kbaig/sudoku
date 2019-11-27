@@ -7,7 +7,9 @@ import PausePlayButton from '../PausePlayButton';
 const App: React.FC = () => {
   return (
     <div className='app'>
-      <PausePlayButton />
+      <div className='top-row'>
+        <PausePlayButton />
+      </div>
       <Board />
       <Keypad />
     </div>

@@ -24,10 +24,12 @@
   border-bottom: none;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 800px) {
   .keypad {
+    margin-top: 20px;
     grid-template-columns: repeat(36, 1fr);
-    grid-row-gap: 35px;
+    grid-template-rows: auto auto;
+    grid-row-gap: 20px;
   }
 
   .keypad .numkey {
@@ -48,5 +50,12 @@
   .keypad .hint-button,
   .keypad .toggle-notes-button {
     border: none;
+  }
+}
+
+@media (max-width: 660px) {
+  .keypad {
+    margin-top: 0;
+    grid-row-gap: 0;
   }
 }

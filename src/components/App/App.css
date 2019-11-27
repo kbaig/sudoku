@@ -1,13 +1,27 @@
 .app {
-  padding: 20px;
+  margin: auto;
+  max-width: 1050px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 20px;
+  grid-template-columns: auto 1fr;
+  grid-gap: 20px;
 }
 
-@media (max-width: 850px) {
+.top-row {
+  grid-column-end: span 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 800px) {
   .app {
     grid-template-columns: 1fr;
-    grid-row-gap: 20px;
+    grid-gap: 0;
+    width: 495px;
+  }
+
+  .top-row {
+    margin-bottom: 10px;
+    grid-column-end: span 1;
   }
 }
