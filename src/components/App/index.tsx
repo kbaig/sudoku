@@ -9,8 +9,8 @@ const App: React.FC = () => {
   return (
     <div className='app'>
       <div className='top-row'>
-        <div />
-        <div />
+        <div>Difficulty: Easy</div>
+        <div>Check for Mistakes</div>
         <div className='timer-and-pause-button'>
           <Timer />
           <PausePlayButton />
