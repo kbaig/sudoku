@@ -13,6 +13,10 @@
   align-items: center;
 }
 
+.top-row .pause-play-button {
+  margin-left: 10px;
+}
+
 @media (max-width: 800px) {
   .app {
     grid-template-columns: 1fr;

@@ -8,7 +8,11 @@ const App: React.FC = () => {
   return (
     <div className='app'>
       <div className='top-row'>
-        <PausePlayButton />
+        <div />
+        <div />
+        <div>
+          <PausePlayButton />
+        </div>
       </div>
       <Board />
       <Keypad />
