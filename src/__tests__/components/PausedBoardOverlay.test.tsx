@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { PausedBoardOverlay } from '../../components/PausedBoardOverlay';
 
-describe('<Numkey />', () => {
+describe('<PausedBoardOverlay />', () => {
   let wrapper: ShallowWrapper;
 
   const resumeGame = jest.fn();
