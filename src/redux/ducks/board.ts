@@ -8,8 +8,9 @@ import { evaluateContext } from '../../util/evalutateContext';
 export type SelectedTile = null | [number, number];
 
 export interface BoardState {
-  gameBoard: BoardType;
   solved: BoardType;
+  initialUnsolvedBoard: BoardType;
+  gameBoard: BoardType;
   selectedTile: SelectedTile;
   isInNotesMode: boolean;
 }
@@ -21,6 +22,7 @@ const TOGGLE_NOTES_BUTTON_PRESSED = 'TOGGLE_NOTES_BUTTON_PRESSED';
 const HINT_BUTTON_PRESSED = 'HINT_BUTTON_PRESSED';
 const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
 const NEW_GAME_BUTTON_PRESSED = 'NEW_GAME_BUTTON_PRESSED';
+const RESTART_BUTTON_PRESSED = 'RESTART_BUTTON_PRESSED';
 
 // action creators
 interface SelectTileAction {
@@ -52,13 +54,18 @@ interface StartNewGameAction {
   type: typeof NEW_GAME_BUTTON_PRESSED;
 }
 
+interface RestartGameAction {
+  type: typeof RESTART_BUTTON_PRESSED;
+}
+
 export type BoardAction =
   | PressNumberAction
   | SelectTileAction
   | ToggleNotesAction
   | GetHintAction
   | EraseTileAction
-  | StartNewGameAction;
+  | StartNewGameAction
+  | RestartGameAction;
 
 export const selectTile = (row: number, column: number): SelectTileAction => ({
   type: TILE_SELECTED,
@@ -82,12 +89,19 @@ export const startNewGame = (): BoardAction => ({
   type: NEW_GAME_BUTTON_PRESSED
 });
 
+export const restartGame = (): BoardAction => ({
+  type: RESTART_BUTTON_PRESSED
+});
+
 const generatedBoard = getNewBoard();
 
 // default state
 const defaultState: BoardState = {
-  gameBoard: generatedBoard.withEmptyTiles,
   solved: generatedBoard.solved,
+  gameBoard: generatedBoard.withEmptyTiles,
+  initialUnsolvedBoard: generatedBoard.withEmptyTiles.map(row =>
+    row.map(tile => ({ ...tile }))
+  ),
   selectedTile: null,
   isInNotesMode: false
 };
@@ -174,9 +188,18 @@ const reducer: Reducer<BoardState, BoardAction> = (
       return {
         ...state,
         solved: newBoard.solved,
-        gameBoard: newBoard.withEmptyTiles
+        gameBoard: newBoard.withEmptyTiles,
+        initialUnsolvedBoard: newBoard.withEmptyTiles.map(row =>
+          row.map(tile => ({ ...tile }))
+        )
       };
-
+    case RESTART_BUTTON_PRESSED:
+      return {
+        ...state,
+        gameBoard: state.initialUnsolvedBoard.map(row =>
+          row.map(tile => ({ ...tile }))
+        )
+      };
     default:
       return state;
   }

@@ -6,9 +6,13 @@ describe('<NewGameButton />', () => {
   let wrapper: ShallowWrapper;
 
   const startNewGame = jest.fn();
+  const restartGame = jest.fn();
 
   beforeEach(
-    () => (wrapper = shallow(<NewGameButton startNewGame={startNewGame} />))
+    () =>
+      (wrapper = shallow(
+        <NewGameButton startNewGame={startNewGame} restartGame={restartGame} />
+      ))
   );
 
   it('renders a button', () => {
@@ -47,5 +51,13 @@ describe('<NewGameButton />', () => {
     wrapper.find('#new-game').simulate('click');
 
     expect(startNewGame).toHaveBeenCalled();
+  });
+
+  it('should call restart game handler when the New Game button is pressed', () => {
+    wrapper.find('.new-game-button__tooltip-button').simulate('click');
+
+    wrapper.find('#restart-game').simulate('click');
+
+    expect(restartGame).toHaveBeenCalled();
   });
 });

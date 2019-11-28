@@ -16,8 +16,11 @@ const { withEmptyTiles, solved } = getNewBoard();
 
 const initialState: State = {
   board: {
-    gameBoard: withEmptyTiles,
     solved,
+    gameBoard: withEmptyTiles,
+    initialUnsolvedBoard: withEmptyTiles.map(row =>
+      row.map(tile => ({ ...tile }))
+    ),
     selectedTile: null,
     isInNotesMode: false
   },
