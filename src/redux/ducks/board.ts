@@ -198,7 +198,8 @@ const reducer: Reducer<BoardState, BoardAction> = (
         ...state,
         gameBoard: state.initialUnsolvedBoard.map(row =>
           row.map(tile => ({ ...tile }))
-        )
+        ),
+        selectedTile: null
       };
     default:
       return state;
