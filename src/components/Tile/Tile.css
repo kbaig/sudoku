@@ -1,7 +1,6 @@
 .tile {
   cursor: pointer;
-  border-right: 1px solid hsl(218, 20%, 79%);
-  border-bottom: 1px solid hsl(218, 20%, 79%);
+  border: 1px solid hsl(218, 20%, 79%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,24 +10,6 @@
 .tile:hover,
 .tile:focus {
   background: hsl(210, 100%, 93%);
-}
-
-.tile:nth-child(3n) {
-  border-right: 2px solid hsl(213, 30%, 29%);
-}
-
-.tile:nth-child(9n + 1) {
-  border-left: 2px solid hsl(213, 30%, 29%);
-}
-
-.tile:nth-child(n + 19):nth-child(-n + 27),
-.tile:nth-child(n + 46):nth-child(-n + 54),
-.tile:nth-child(n + 73):nth-child(-n + 81) {
-  border-bottom: 2px solid hsl(213, 30%, 29%);
-}
-
-.tile:nth-child(n):nth-child(-n + 9) {
-  border-top: 2px solid hsl(213, 30%, 29%);
 }
 
 .tile.tile--highlighted {
