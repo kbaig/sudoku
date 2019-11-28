@@ -4,6 +4,7 @@ import { Board } from '../../components/Board';
 import { getBoardLength, isInSameSquare } from '../../util/board';
 import Tile from '../../components/Tile';
 import { generateMockBoard } from '../../util/generateMockBoard';
+import PausedBoardOverlay from '../../components/PausedBoardOverlay';
 
 describe('<Board />', () => {
   let wrapper: ShallowWrapper;
@@ -15,7 +16,12 @@ describe('<Board />', () => {
   beforeEach(
     () =>
       (wrapper = shallow(
-        <Board gameBoard={board} selectedTile={null} selectTile={selectTile} />
+        <Board
+          isPlaying
+          gameBoard={board}
+          selectedTile={null}
+          selectTile={selectTile}
+        />
       ))
   );
 
@@ -56,7 +62,12 @@ describe('<Board />', () => {
     expect(wrapper.find({ isSelected: true }).length).toBe(0);
 
     wrapper = shallow(
-      <Board gameBoard={board} selectedTile={[0, 0]} selectTile={selectTile} />
+      <Board
+        isPlaying
+        gameBoard={board}
+        selectedTile={[0, 0]}
+        selectTile={selectTile}
+      />
     );
 
     expect(wrapper.childAt(0).prop('isSelected')).toBe(true);
@@ -72,6 +83,7 @@ describe('<Board />', () => {
 
     wrapper = shallow(
       <Board
+        isPlaying
         gameBoard={board}
         selectedTile={[selectedRow, selectedCol]}
         selectTile={selectTile}
@@ -102,6 +114,7 @@ describe('<Board />', () => {
 
     wrapper = shallow(
       <Board
+        isPlaying
         gameBoard={board}
         selectedTile={[selectedRow, selectedCol]}
         selectTile={selectTile}
@@ -153,6 +166,7 @@ describe('<Board />', () => {
 
     wrapper = shallow(
       <Board
+        isPlaying
         gameBoard={boardWithWrongValue}
         selectedTile={null}
         selectTile={selectTile}
@@ -217,6 +231,40 @@ describe('<Board />', () => {
               )) &&
             boardWithWrongValue[i][j].value ===
               boardWithWrongValue[wrongRow][wrongCol].value
+        );
+      });
+    });
+  });
+
+  it('renders a <PausedBoardOverlay /> if the game is paused', () => {
+    expect(wrapper.find(PausedBoardOverlay).length).toBe(0);
+
+    wrapper = shallow(
+      <Board
+        isPlaying={false}
+        gameBoard={board}
+        selectedTile={null}
+        selectTile={selectTile}
+      />
+    );
+
+    expect(wrapper.find(PausedBoardOverlay).length).toBe(1);
+  });
+
+  it('hides all tiles when game is paused', () => {
+    wrapper = shallow(
+      <Board
+        isPlaying={false}
+        gameBoard={board}
+        selectedTile={null}
+        selectTile={selectTile}
+      />
+    );
+
+    board.forEach((row, i) => {
+      row.forEach((col, j) => {
+        expect(wrapper.childAt(i * board.length + j).prop('type')).toBe(
+          'blank'
         );
       });
     });

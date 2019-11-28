@@ -6,15 +6,18 @@ import { BoardType } from '../../types/gameBoard';
 import { State } from '../../redux';
 import { isInSameSquare } from '../../util/board';
 import { SelectedTile, selectTile } from '../../redux/ducks/board';
+import PausedBoardOverlay from '../PausedBoardOverlay';
 
 interface Props {
   gameBoard: BoardType;
+  isPlaying: boolean;
   selectedTile: SelectedTile;
   selectTile: (row: number, col: number) => void;
 }
 
 export const Board: React.FC<Props> = ({
   gameBoard,
+  isPlaying,
   selectedTile,
   selectTile
 }) => {
@@ -22,7 +25,7 @@ export const Board: React.FC<Props> = ({
     selectedTile && gameBoard[selectedTile[0]][selectedTile[1]].value;
   const valueIsNumber = typeof selectedValue === 'number';
 
-  return (
+  return isPlaying ? (
     <div className='board'>
       {gameBoard.map((row, i) => (
         <React.Fragment key={i}>
@@ -90,12 +93,60 @@ export const Board: React.FC<Props> = ({
         </React.Fragment>
       ))}
     </div>
+  ) : (
+    <div className='board'>
+      {gameBoard.map((row, i) => (
+        <React.Fragment key={i}>
+          {row.map(({ type, value, animationDelay }, j) => {
+            const rowCoords = gameBoard[i].map((_, j) => `${i},${j}`);
+            const colCoords = gameBoard.map((_, i) => `${i},${j}`);
+            const topRow = Math.floor(i / 3) * 3;
+            const leftCol = Math.floor(j / 3) * 3;
+            const innerSquareCoords = gameBoard
+              .slice(topRow, topRow + 3)
+              .map((row, i) =>
+                row
+                  .slice(leftCol, leftCol + 3)
+                  .map((_, j) => `${i + topRow},${j + leftCol}`)
+              )
+              .reduce((a, b) => a.concat(b));
+
+            const sameContextCoords = new Set([
+              ...rowCoords,
+              ...colCoords,
+              ...innerSquareCoords
+            ]);
+            sameContextCoords.delete(`${i},${j}`);
+
+            return (
+              <Tile
+                key={`${i},${j}`}
+                type='blank'
+                onClick={() => {}}
+                isSelected={false}
+                isHighlighted={false}
+                sameIsSelected={false}
+                sameIsIncorrectlyUsed={false}
+                animationDelay={null}
+              >
+                {null}
+              </Tile>
+            );
+          })}
+        </React.Fragment>
+      ))}
+      <PausedBoardOverlay />
+    </div>
   );
 };
 
-const mapStateToProps = ({ board: { gameBoard, selectedTile } }: State) => ({
+const mapStateToProps = ({
+  board: { gameBoard, selectedTile },
+  timer: { isPlaying }
+}: State) => ({
   gameBoard,
-  selectedTile
+  selectedTile,
+  isPlaying
 });
 
 export default connect(mapStateToProps, { selectTile })(Board);
