@@ -10,7 +10,7 @@ describe('<PausePlayButton />', () => {
   beforeEach(
     () =>
       (wrapper = shallow(
-        <PausePlayButton isPaused togglePause={togglePause}></PausePlayButton>
+        <PausePlayButton isPlaying togglePause={togglePause}></PausePlayButton>
       ))
   );
 
@@ -19,16 +19,16 @@ describe('<PausePlayButton />', () => {
   });
 
   it('gives feedback on pause/play status', () => {
-    expect(wrapper.find('.pause-play-button--paused').length).toBe(1);
+    expect(wrapper.find('.pause-play-button--playing').length).toBe(1);
 
     wrapper = shallow(
       <PausePlayButton
-        isPaused={false}
+        isPlaying={false}
         togglePause={togglePause}
       ></PausePlayButton>
     );
 
-    expect(wrapper.find('.pause-play-button--paused').length).toBe(0);
+    expect(wrapper.find('.pause-play-button--playing').length).toBe(0);
   });
 
   it('calls the toggleNotes prop on click', () => {

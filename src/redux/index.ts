@@ -1,16 +1,16 @@
 import { createStore, combineReducers } from 'redux';
 import boardReducer, { BoardAction } from './ducks/board';
-import timeReducer, { TimeAction, incrementTime } from './ducks/time';
+import timeReducer, { TimerAction, incrementTime } from './ducks/timer';
 import { getNewBoard } from '../util/generateBoard';
 
 const rootReducer = combineReducers({
   board: boardReducer,
-  time: timeReducer
+  timer: timeReducer
 });
 
 export type State = ReturnType<typeof rootReducer>;
 
-export type ActionType = BoardAction | TimeAction;
+export type ActionType = BoardAction | TimerAction;
 
 const { withEmptyTiles, solved } = getNewBoard();
 
@@ -19,10 +19,12 @@ const initialState: State = {
     gameBoard: withEmptyTiles,
     solved,
     selectedTile: null,
-    isInNotesMode: false,
-    isPaused: false
+    isInNotesMode: false
   },
-  time: 0
+  timer: {
+    seconds: 0,
+    isPlaying: true
+  }
 };
 
 export const store = createStore(

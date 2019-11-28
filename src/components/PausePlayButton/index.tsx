@@ -5,25 +5,28 @@ import { State } from '../../redux';
 import { IoIosPause } from 'react-icons/io';
 import { FaPlay } from 'react-icons/fa';
 import classnames from 'classnames';
-import { togglePause } from '../../redux/ducks/board';
+import { togglePause } from '../../redux/ducks/timer';
 
 interface Props {
-  isPaused: boolean;
+  isPlaying: boolean;
   togglePause: () => void;
 }
 
-export const PausePlayButton: React.FC<Props> = ({ isPaused, togglePause }) => {
+export const PausePlayButton: React.FC<Props> = ({
+  isPlaying,
+  togglePause
+}) => {
   const buttonClasses = classnames('pause-play-button', {
-    'pause-play-button--paused': isPaused
+    'pause-play-button--playing': isPlaying
   });
 
   return (
     <button className={buttonClasses} onClick={() => togglePause()}>
-      {isPaused ? <FaPlay /> : <IoIosPause />}
+      {isPlaying ? <IoIosPause /> : <FaPlay />}
     </button>
   );
 };
 
-const mapStateToProps = ({ board: { isPaused } }: State) => ({ isPaused });
+const mapStateToProps = ({ timer: { isPlaying } }: State) => ({ isPlaying });
 
 export default connect(mapStateToProps, { togglePause })(PausePlayButton);
