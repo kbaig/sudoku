@@ -20,6 +20,9 @@ describe('<NewGameButton />', () => {
   });
 
   it('should hide tooltip on click of cancel button', () => {
+    // setTimeout is used for animation
+    jest.useFakeTimers();
+
     wrapper.find('.new-game-button__tooltip-button').simulate('click');
 
     expect(wrapper.find('.new-game-button__tooltip-container').length).toBe(1);
@@ -27,6 +30,9 @@ describe('<NewGameButton />', () => {
     wrapper
       .find('.new-game-button__list-item-button--cancel')
       .simulate('click');
+
+    // wait for animation to finish
+    jest.runAllTimers();
 
     expect(wrapper.find('.new-game-button__tooltip-container').length).toBe(0);
   });
