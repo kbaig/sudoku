@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux';
 import boardReducer, { BoardAction } from './ducks/board';
-import timeReducer, { TimerAction, incrementTime } from './ducks/timer';
+import timeReducer, { TimerAction } from './ducks/timer';
 import { getNewBoard } from '../util/generateBoard';
 
 const rootReducer = combineReducers({
@@ -34,7 +34,3 @@ export const store = createStore(
     (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
     (window as any).__REDUX_DEVTOOLS_EXTENSION__()
 );
-
-setInterval(() => {
-  store.dispatch(incrementTime());
-}, 1000);
