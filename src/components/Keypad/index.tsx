@@ -5,6 +5,7 @@ import EraseButton from '../EraseButton';
 import ToggleNotesButton from '../ToggleNotesButton';
 import './Keypad.css';
 import HintButton from '../HintButton';
+import NewGameButton from '../NewGameButton';
 
 const keys: TileNumberType[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -17,6 +18,7 @@ const Keypad: React.FC = () => {
       <ToggleNotesButton />
       <HintButton />
       <EraseButton />
+      <NewGameButton />
     </div>
   );
 };

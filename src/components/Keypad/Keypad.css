@@ -1,7 +1,13 @@
 .keypad {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 1fr 1fr 1fr auto auto;
+  grid-template-rows: auto 1fr 1fr 1fr auto auto;
+}
+
+.keypad .new-game-button {
+  grid-column: 1 / -1;
+  grid-row-start: 1;
+  margin-bottom: 20px;
 }
 
 .keypad .numkey {
@@ -30,6 +36,10 @@
     grid-template-columns: repeat(36, 1fr);
     grid-template-rows: auto auto;
     grid-row-gap: 20px;
+  }
+
+  .keypad .new-game-button {
+    display: none;
   }
 
   .keypad .numkey {
