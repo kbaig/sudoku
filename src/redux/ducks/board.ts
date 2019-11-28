@@ -20,6 +20,7 @@ const NUMBER_PRESSED = 'NUMBER_PRESSED';
 const TOGGLE_NOTES_BUTTON_PRESSED = 'TOGGLE_NOTES_BUTTON_PRESSED';
 const HINT_BUTTON_PRESSED = 'HINT_BUTTON_PRESSED';
 const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
+const NEW_GAME_BUTTON_PRESSED = 'NEW_GAME_BUTTON_PRESSED';
 
 // action creators
 interface SelectTileAction {
@@ -47,12 +48,17 @@ interface EraseTileAction {
   type: typeof ERASE_BUTTON_PRESSED;
 }
 
+interface StartNewGameAction {
+  type: typeof NEW_GAME_BUTTON_PRESSED;
+}
+
 export type BoardAction =
   | PressNumberAction
   | SelectTileAction
   | ToggleNotesAction
   | GetHintAction
-  | EraseTileAction;
+  | EraseTileAction
+  | StartNewGameAction;
 
 export const selectTile = (row: number, column: number): SelectTileAction => ({
   type: TILE_SELECTED,
@@ -71,6 +77,10 @@ export const toggleNotes = (): BoardAction => ({
 export const getHint = (): BoardAction => ({ type: HINT_BUTTON_PRESSED });
 
 export const eraseTile = (): BoardAction => ({ type: ERASE_BUTTON_PRESSED });
+
+export const startNewGame = (): BoardAction => ({
+  type: NEW_GAME_BUTTON_PRESSED
+});
 
 const generatedBoard = getNewBoard();
 
@@ -159,6 +169,14 @@ const reducer: Reducer<BoardState, BoardAction> = (
       } else {
         return state;
       }
+    case NEW_GAME_BUTTON_PRESSED:
+      const newBoard = getNewBoard();
+      return {
+        ...state,
+        solved: newBoard.solved,
+        gameBoard: newBoard.withEmptyTiles
+      };
+
     default:
       return state;
   }

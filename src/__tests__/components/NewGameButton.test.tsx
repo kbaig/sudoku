@@ -5,7 +5,11 @@ import { NewGameButton } from '../../components/NewGameButton';
 describe('<NewGameButton />', () => {
   let wrapper: ShallowWrapper;
 
-  beforeEach(() => (wrapper = shallow(<NewGameButton />)));
+  const startNewGame = jest.fn();
+
+  beforeEach(
+    () => (wrapper = shallow(<NewGameButton startNewGame={startNewGame} />))
+  );
 
   it('renders a button', () => {
     expect(wrapper.find('button').length).toBe(1);
@@ -35,5 +39,13 @@ describe('<NewGameButton />', () => {
     jest.runAllTimers();
 
     expect(wrapper.find('.new-game-button__tooltip-container').length).toBe(0);
+  });
+
+  it('should call new game handler when the New Game button is pressed', () => {
+    wrapper.find('.new-game-button__tooltip-button').simulate('click');
+
+    wrapper.find('#new-game').simulate('click');
+
+    expect(startNewGame).toHaveBeenCalled();
   });
 });

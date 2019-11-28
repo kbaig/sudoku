@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { startNewGame } from '../../redux/ducks/board';
 import './NewGameButton.css';
 
-interface Props {}
+interface Props {
+  startNewGame: () => void;
+}
 
-export const NewGameButton: React.FC<Props> = () => {
+export const NewGameButton: React.FC<Props> = ({ startNewGame }) => {
   const [show, setShow] = React.useState(false);
   const [isExiting, setIsExiting] = React.useState(false);
 
@@ -44,7 +47,14 @@ export const NewGameButton: React.FC<Props> = () => {
             </div>
             <ul className='new-game-button__button-list'>
               <li>
-                <button className='new-game-button__list-item-button'>
+                <button
+                  className='new-game-button__list-item-button'
+                  id='new-game'
+                  onClick={() => {
+                    hideTooltip();
+                    startNewGame();
+                  }}
+                >
                   New Game
                 </button>
               </li>
@@ -69,4 +79,4 @@ export const NewGameButton: React.FC<Props> = () => {
   );
 };
 
-export default connect()(NewGameButton);
+export default connect(null, { startNewGame })(NewGameButton);
