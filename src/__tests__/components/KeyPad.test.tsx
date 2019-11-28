@@ -16,8 +16,8 @@ describe('<Keypad />', () => {
   it(`renders ${keys.length} <Numkey />s with correct values`, () => {
     expect(wrapper.find(Numkey).length).toBe(keys.length);
 
-    keys.forEach((n, i) => {
-      expect(wrapper.childAt(i).prop('children')).toEqual(n);
+    wrapper.find('.numkey').forEach((numkey, i) => {
+      expect(numkey.prop('children')).toEqual(keys[i]);
     });
   });
 
