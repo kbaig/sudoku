@@ -11,18 +11,3 @@ Built to learn TDD with Jest and Enzyme
 * `Reselect`
 * `Jest`
 * `Enzyme`
-
-## Components
-* `<Board />` - Container for squares
-  * `Tile` - Number or note container
-* `<Keypad />`
-  <!-- * numbers, Notes toggle, Hint, Undo, Erase -->
-  * `Numkey`
-  <!-- * `<ToggleNotesButton />` -->
-  <!-- * `<GetHintButton />` -->
-  <!-- * `<UndoButton />` -->
-  * `<EraseButton />`
-<!-- * `<Timer />` -->
-<!-- * `<SelectDifficulty />` -->
-<!-- * `<CheckForMistakesToggle />` -->
-<!-- * `<Instructions />` -->
