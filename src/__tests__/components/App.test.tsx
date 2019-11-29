@@ -4,6 +4,7 @@ import App from '../../components/App';
 import Board from '../../components/Board';
 import PausePlayButton from '../../components/PausePlayButton';
 import Timer from '../../components/Timer';
+import CheckForMistakesToggle from '../../components/CheckForMistakesToggle';
 
 describe('<App />', () => {
   let wrapper: ShallowWrapper;
@@ -15,6 +16,10 @@ describe('<App />', () => {
 
   it('renders a <Timer />', () => {
     expect(wrapper.find(Timer).length).toBe(1);
+  });
+
+  it('renders a <CheckForMistakesToggle />', () => {
+    expect(wrapper.find(CheckForMistakesToggle).length).toBe(1);
   });
 
   it('renders a <PausePlayButton />', () => {

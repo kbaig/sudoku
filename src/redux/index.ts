@@ -22,7 +22,8 @@ const initialState: State = {
       row.map(tile => ({ ...tile }))
     ),
     selectedTile: null,
-    isInNotesMode: false
+    isInNotesMode: false,
+    isInCheckForMistakesMode: true
   },
   timer: {
     seconds: 0,

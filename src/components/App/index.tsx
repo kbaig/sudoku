@@ -4,13 +4,14 @@ import Board from '../Board';
 import Keypad from '../Keypad';
 import PausePlayButton from '../PausePlayButton';
 import Timer from '../Timer';
+import CheckForMistakesToggle from '../CheckForMistakesToggle';
 
 const App: React.FC = () => {
   return (
     <div className='app'>
       <div className='top-row'>
         <div>Difficulty: Easy</div>
-        <div>Check for Mistakes</div>
+        <CheckForMistakesToggle />
         <div className='timer-and-pause-button'>
           <Timer />
           <PausePlayButton />

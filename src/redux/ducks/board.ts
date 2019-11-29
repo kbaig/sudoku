@@ -13,12 +13,14 @@ export interface BoardState {
   gameBoard: BoardType;
   selectedTile: SelectedTile;
   isInNotesMode: boolean;
+  isInCheckForMistakesMode: boolean;
 }
 
 // actions
 const TILE_SELECTED = 'TILE_SELECTED';
 const NUMBER_PRESSED = 'NUMBER_PRESSED';
 const TOGGLE_NOTES_BUTTON_PRESSED = 'TOGGLE_NOTES_BUTTON_PRESSED';
+const CHECK_FOR_MISTAKES_TOGGLE_PRESSED = 'CHECK_FOR_MISTAKES_TOGGLE_PRESSED';
 const HINT_BUTTON_PRESSED = 'HINT_BUTTON_PRESSED';
 const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
 const NEW_GAME_BUTTON_PRESSED = 'NEW_GAME_BUTTON_PRESSED';
@@ -42,6 +44,10 @@ interface ToggleNotesAction {
   type: typeof TOGGLE_NOTES_BUTTON_PRESSED;
 }
 
+interface ToggleCheckForMistakesAction {
+  type: typeof CHECK_FOR_MISTAKES_TOGGLE_PRESSED;
+}
+
 interface GetHintAction {
   type: typeof HINT_BUTTON_PRESSED;
 }
@@ -62,6 +68,7 @@ export type BoardAction =
   | PressNumberAction
   | SelectTileAction
   | ToggleNotesAction
+  | ToggleCheckForMistakesAction
   | GetHintAction
   | EraseTileAction
   | StartNewGameAction
@@ -79,6 +86,10 @@ export const pressNumber = (num: TileNumberType): BoardAction => ({
 
 export const toggleNotes = (): BoardAction => ({
   type: TOGGLE_NOTES_BUTTON_PRESSED
+});
+
+export const toggleCheckForMistakes = (): BoardAction => ({
+  type: CHECK_FOR_MISTAKES_TOGGLE_PRESSED
 });
 
 export const getHint = (): BoardAction => ({ type: HINT_BUTTON_PRESSED });
@@ -103,7 +114,8 @@ const defaultState: BoardState = {
     row.map(tile => ({ ...tile }))
   ),
   selectedTile: null,
-  isInNotesMode: false
+  isInNotesMode: false,
+  isInCheckForMistakesMode: true
 };
 
 // reducer
@@ -168,6 +180,11 @@ const reducer: Reducer<BoardState, BoardAction> = (
       return state;
     case TOGGLE_NOTES_BUTTON_PRESSED:
       return { ...state, isInNotesMode: !state.isInNotesMode };
+    case CHECK_FOR_MISTAKES_TOGGLE_PRESSED:
+      return {
+        ...state,
+        isInCheckForMistakesMode: !state.isInCheckForMistakesMode
+      };
     case HINT_BUTTON_PRESSED:
       const { selectedTile, gameBoard, solved } = state;
       if (selectedTile) {

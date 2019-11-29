@@ -1,0 +1,61 @@
+.check-for-mistakes-toggle {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  color: hsl(214, 20%, 65%);
+}
+
+.check-for-mistakes-toggle__label-text {
+  margin-right: 10px;
+}
+
+.check-for-mistakes-toggle__switch {
+  position: relative;
+  width: 46px;
+  height: 14px;
+  border-radius: 13px;
+  background: hsl(213, 23%, 91%);
+}
+
+.check-for-mistakes-toggle__checkbox {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.check-for-mistakes-toggle__switch-pin {
+  position: absolute;
+  top: -6px;
+  left: -1px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid hsl(213, 23%, 91%);
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 200ms ease-in-out;
+}
+
+.check-for-mistakes-toggle__switch-pin svg {
+  width: 12px;
+}
+
+.check-for-mistakes-toggle--enabled .check-for-mistakes-toggle__switch-pin {
+  left: 20px;
+  border-color: hsl(217, 21%, 66%);
+  color: hsl(212, 72%, 59%);
+}
+
+@media (max-width: 800px) {
+  .check-for-mistakes-toggle__label-text {
+    display: none;
+  }
+}
