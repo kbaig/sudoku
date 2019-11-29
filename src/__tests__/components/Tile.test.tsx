@@ -168,6 +168,7 @@ describe('<Tile />', () => {
   });
 
   it('should call the passed click handler on click', () => {
+    expect(handleClick).not.toHaveBeenCalled();
     wrapper.find('.tile').simulate('click');
     expect(handleClick).toHaveBeenCalledTimes(1);
   });

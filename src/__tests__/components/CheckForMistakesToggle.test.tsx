@@ -31,9 +31,7 @@ describe('<CheckForMistakesToggle />', () => {
 
   it('calls the toggle  mistakes mode handler on click', () => {
     expect(toggleCheckForMistakes).not.toHaveBeenCalled();
-
     wrapper.find(`.check-for-mistakes-toggle__checkbox`).simulate('change');
-
     expect(toggleCheckForMistakes).toHaveBeenCalled();
   });
 });

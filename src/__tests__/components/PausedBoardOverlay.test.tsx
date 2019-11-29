@@ -12,7 +12,8 @@ describe('<PausedBoardOverlay />', () => {
   );
 
   it('calls the onClick handler on click using the value in its children', () => {
+    expect(resumeGame).not.toHaveBeenCalled();
     wrapper.simulate('click');
-    expect(resumeGame).toHaveBeenCalled();
+    expect(resumeGame).toHaveBeenCalledTimes(1);
   });
 });

@@ -37,7 +37,8 @@ describe('<ToggleNotesButton />', () => {
   });
 
   it('calls the toggleNotes prop on click', () => {
+    expect(toggleNotes).not.toHaveBeenCalled();
     wrapper.simulate('click');
-    expect(toggleNotes).toHaveBeenCalled();
+    expect(toggleNotes).toHaveBeenCalledTimes(1);
   });
 });

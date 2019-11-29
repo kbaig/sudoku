@@ -32,7 +32,8 @@ describe('<PausePlayButton />', () => {
   });
 
   it('calls the toggleNotes prop on click', () => {
+    expect(togglePause).not.toHaveBeenCalled();
     wrapper.simulate('click');
-    expect(togglePause).toHaveBeenCalled();
+    expect(togglePause).toHaveBeenCalledTimes(1);
   });
 });

@@ -13,7 +13,8 @@ describe('<EraseButton />', () => {
   });
 
   it('calls eraseTile on click', () => {
+    expect(eraseTile).not.toHaveBeenCalled();
     wrapper.simulate('click');
-    expect(eraseTile).toHaveBeenCalled();
+    expect(eraseTile).toHaveBeenCalledTimes(1);
   });
 });

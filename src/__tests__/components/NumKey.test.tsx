@@ -19,7 +19,9 @@ describe('<Numkey />', () => {
   });
 
   it('calls the onClick handler on click using the value in its children', () => {
+    expect(pressNumber).not.toHaveBeenCalled();
     wrapper.simulate('click');
+    expect(pressNumber).toHaveBeenCalledTimes(1);
     expect(pressNumber).toHaveBeenCalledWith(children);
   });
 });

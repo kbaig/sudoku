@@ -13,7 +13,8 @@ describe('<HintButton />', () => {
   });
 
   it('calls eraseTile on click', () => {
+    expect(getHint).not.toHaveBeenCalled();
     wrapper.simulate('click');
-    expect(getHint).toHaveBeenCalled();
+    expect(getHint).toHaveBeenCalledTimes(1);
   });
 });
