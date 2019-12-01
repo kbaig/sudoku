@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import produce from 'immer';
 
 //types
 export interface TimerState {
@@ -51,17 +52,18 @@ const defaultState: TimerState = {
 const reducer: Reducer<TimerState, TimerAction> = (
   state = defaultState,
   action
-) => {
-  switch (action.type) {
-    case PAUSE_PLAY_BUTTON_PRESSED:
-      return { ...state, isPlaying: !state.isPlaying };
-    case PAUSED_BOARD_OVERLAY_CLICKED:
-      return { ...state, isPlaying: true };
-    case TIME_INCREMENTED:
-      return { ...state, seconds: state.seconds + 1 };
-    default:
-      return state;
-  }
-};
+) =>
+  produce(state, draft => {
+    switch (action.type) {
+      case PAUSE_PLAY_BUTTON_PRESSED:
+        draft.isPlaying = !draft.isPlaying;
+      case PAUSED_BOARD_OVERLAY_CLICKED:
+        draft.isPlaying = true;
+      case TIME_INCREMENTED:
+        draft.seconds++;
+      default:
+        return draft;
+    }
+  });
 
 export default reducer;
