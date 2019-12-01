@@ -92,7 +92,7 @@ export const processNotesAfterNumClick = (
 
   const boardCopy = [...board.map(row => [...row])];
 
-  const rowCoords = boardCopy[row].map((_, j) => `${row},${col}`);
+  const rowCoords = boardCopy[row].map((_, j) => `${row},${j}`);
   const colCoords = boardCopy.map((_, i) => `${i},${col}`);
   const topRow = Math.floor(row / 3) * 3;
   const leftCol = Math.floor(col / 3) * 3;
