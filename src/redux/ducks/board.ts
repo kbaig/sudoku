@@ -1,3 +1,4 @@
+import produce from 'immer';
 import { changeTileValue, processNotesAfterNumClick } from '../../util/board';
 import { TileNumberType, BoardType } from '../../types/gameBoard';
 import { Reducer } from 'redux';
@@ -7,6 +8,7 @@ import {
   evaluateWholeBoardWithoutMistakes,
   evaluateWholeBoardWithMistakes
 } from '../../util/evaluateWholeBoard';
+import { deepCloneBoard } from '../../util/deepCloneBoard';
 
 //types
 export type SelectedTile = null | [number, number];
@@ -139,176 +141,160 @@ const reducer: Reducer<BoardState, BoardAction> = (
   state = defaultState,
   action
 ) => {
-  switch (action.type) {
-    case TILE_SELECTED:
-      const { row, column } = action.payload;
-      return { ...state, selectedTile: [row, column] };
-    case NUMBER_PRESSED:
-      // only do something if there's a selected tile and it's editable
-      if (state.selectedTile) {
-        let deepCopyBoard = state.currentBoard.map(row =>
-          row.map(tile => ({ ...tile }))
-        );
-        const [row, column] = state.selectedTile;
+  return produce(state, draft => {
+    switch (action.type) {
+      case TILE_SELECTED:
+        const { row, column } = action.payload;
+        draft.selectedTile = [row, column];
+        return;
+      case NUMBER_PRESSED:
+        // only do something if there's a selected tile and it's editable
+        if (draft.selectedTile) {
+          draft.currentBoard = deepCloneBoard(draft.currentBoard);
+          const [row, col] = draft.selectedTile;
 
-        const prevTileState = deepCopyBoard[row][column];
+          const prevTileState = draft.currentBoard[row][col];
 
-        if (prevTileState.type !== 'readOnly') {
-          deepCopyBoard[row][column] = changeTileValue(
-            prevTileState,
-            action.payload,
-            [row, column],
-            state.solvedBoard,
-            state.isInNotesMode
-          );
-
-          // only need to concern ourselves with the selected tile as far
-          // as tile correctness of all tiles and win state in check for mistakes mode
-          if (state.isInCheckForMistakesMode) {
-            evaluateContext(deepCopyBoard, [row, column]);
-          } else {
-            deepCopyBoard = evaluateWholeBoardWithoutMistakes(deepCopyBoard);
-            deepCopyBoard.forEach((row, i) =>
-              row.forEach((tile, j) => evaluateContext(currentBoard, [i, j]))
+          if (prevTileState.type !== 'readOnly') {
+            draft.currentBoard[row][col] = changeTileValue(
+              prevTileState,
+              action.payload,
+              [row, col],
+              draft.solvedBoard,
+              draft.isInNotesMode
             );
+
+            // only need to concern ourselves with the selected tile as far
+            // as tile correctness of all tiles and win state in check for mistakes mode
+            if (draft.isInCheckForMistakesMode) {
+              evaluateContext(draft.currentBoard, [row, col]);
+            } else {
+              draft.currentBoard = evaluateWholeBoardWithoutMistakes(
+                draft.currentBoard
+              );
+              draft.currentBoard.forEach((row, i) =>
+                row.forEach((tile, j) =>
+                  evaluateContext(draft.currentBoard, [i, j])
+                )
+              );
+            }
+
+            if (!draft.isInNotesMode) {
+              draft.currentBoard = processNotesAfterNumClick(
+                draft.currentBoard,
+                [row, col]
+              );
+            }
+
+            draft.boardHistory.push(draft.currentBoard);
           }
-
-          const gameBoardWithProcessedNotes = state.isInNotesMode
-            ? deepCopyBoard
-            : processNotesAfterNumClick(deepCopyBoard, [row, column]);
-
-          return {
-            ...state,
-            gameBoard: gameBoardWithProcessedNotes,
-            boardHistory: [...state.boardHistory, gameBoardWithProcessedNotes]
-          };
         }
-      }
-      return state;
-    case ERASE_BUTTON_PRESSED:
-      // only erase if there's a selected tile, it's editable, and isn't already blank
-      if (state.selectedTile) {
-        let deepCopyBoard = state.currentBoard.map(row =>
-          row.map(tile => ({ ...tile }))
-        );
-        const [row, column] = state.selectedTile;
+        return;
+      case ERASE_BUTTON_PRESSED:
+        // only erase if there's a selected tile, it's editable, and isn't already blank
+        if (draft.selectedTile) {
+          draft.currentBoard = deepCloneBoard(draft.currentBoard);
+          const [row, col] = draft.selectedTile;
 
-        const prevTileState = deepCopyBoard[row][column];
+          const prevTileState = draft.currentBoard[row][col];
 
-        if (prevTileState.type !== 'readOnly' && prevTileState.value) {
-          deepCopyBoard[row][column] = changeTileValue(
-            prevTileState,
-            null,
-            [row, column],
-            state.solvedBoard,
-            state.isInNotesMode
-          );
-
-          // only need to concern ourselves with the selected tile as far
-          // as tile correctness of all tiles and win state in check for mistakes mode
-          if (state.isInCheckForMistakesMode) {
-            evaluateContext(deepCopyBoard, [row, column]);
-          } else {
-            deepCopyBoard = evaluateWholeBoardWithoutMistakes(deepCopyBoard);
-            deepCopyBoard.forEach((row, i) =>
-              row.forEach((tile, j) => evaluateContext(currentBoard, [i, j]))
+          if (prevTileState.type !== 'readOnly' && prevTileState.value) {
+            draft.currentBoard[row][col] = changeTileValue(
+              prevTileState,
+              null,
+              [row, col],
+              draft.solvedBoard,
+              draft.isInNotesMode
             );
-          }
 
-          return {
-            ...state,
-            gameBoard: deepCopyBoard,
-            boardHistory: [...state.boardHistory, deepCopyBoard]
-          };
+            // only need to concern ourselves with the selected tile as far
+            // as tile correctness of all tiles and win state in check for mistakes mode
+            if (draft.isInCheckForMistakesMode) {
+              evaluateContext(draft.currentBoard, [row, col]);
+            } else {
+              draft.currentBoard = evaluateWholeBoardWithoutMistakes(
+                draft.currentBoard
+              );
+              draft.currentBoard.forEach((row, i) =>
+                row.forEach((tile, j) =>
+                  evaluateContext(draft.currentBoard, [i, j])
+                )
+              );
+            }
+
+            draft.boardHistory.push(draft.currentBoard);
+          }
         }
-      }
-      return state;
-    case TOGGLE_NOTES_BUTTON_PRESSED:
-      return { ...state, isInNotesMode: !state.isInNotesMode };
-    case CHECK_FOR_MISTAKES_TOGGLE_PRESSED:
-      return {
-        ...state,
-        isInCheckForMistakesMode: !state.isInCheckForMistakesMode,
-        gameBoard: state.isInCheckForMistakesMode
-          ? evaluateWholeBoardWithoutMistakes(state.currentBoard)
-          : evaluateWholeBoardWithMistakes(
-              state.currentBoard,
-              state.solvedBoard
-            )
-      };
-    case HINT_BUTTON_PRESSED:
-      const { selectedTile, currentBoard, solvedBoard } = state;
-      if (selectedTile) {
-        const [row, col] = selectedTile;
-        const newTile = { ...solvedBoard[row][col] };
+        return;
+      case TOGGLE_NOTES_BUTTON_PRESSED:
+        draft.isInNotesMode = !draft.isInNotesMode;
+        return;
+      case CHECK_FOR_MISTAKES_TOGGLE_PRESSED:
+        draft.isInCheckForMistakesMode = !draft.isInCheckForMistakesMode;
 
-        // add read only tile to each board in history so that hints can not be undone
-        const newHistory = state.boardHistory.map(board => {
-          const newBoard = board.map(row => row.map(tile => ({ ...tile })));
+        if (draft.isInCheckForMistakesMode) {
+          draft.currentBoard = evaluateWholeBoardWithMistakes(
+            draft.currentBoard,
+            draft.solvedBoard
+          );
+        } else {
+          draft.currentBoard = evaluateWholeBoardWithoutMistakes(
+            draft.currentBoard
+          );
+        }
+        return;
+      case HINT_BUTTON_PRESSED:
+        if (draft.selectedTile) {
+          const [row, col] = draft.selectedTile;
+          const newTile = { ...draft.solvedBoard[row][col] };
 
-          newBoard[row][col] = { ...newTile };
+          // add read only tile to each board in history so that hints can not be undone
+          draft.boardHistory.forEach(board => {
+            // assign read only tile
+            board[row][col] = { ...newTile };
 
-          if (!state.isInCheckForMistakesMode) {
-            evaluateWholeBoardWithoutMistakes(newBoard);
-          }
+            // reevaluate board for correctness if not in check for mistakes mode
+            if (!draft.isInCheckForMistakesMode) {
+              evaluateWholeBoardWithoutMistakes(board);
+            }
 
-          evaluateContext(newBoard, [row, col]);
+            // evaluate context for completeness since we've added a value
+            evaluateContext(board, [row, col]);
+          });
 
-          return newBoard;
-        });
+          // only worry about altering the notes based on new number for current board
+          processNotesAfterNumClick(
+            draft.boardHistory[draft.boardHistory.length - 1],
+            [row, col]
+          );
+        }
+        return;
+      case NEW_GAME_BUTTON_PRESSED:
+        const { solved, withEmptyTiles } = getNewBoard();
+        draft.solvedBoard = solved;
+        draft.currentBoard = withEmptyTiles;
+        draft.initialBoard = deepCloneBoard(withEmptyTiles);
+        draft.boardHistory = [deepCloneBoard(withEmptyTiles)];
+        return;
+      case RESTART_BUTTON_PRESSED:
+        draft.currentBoard = deepCloneBoard(draft.initialBoard);
+        draft.boardHistory = [deepCloneBoard(draft.initialBoard)];
+        draft.selectedTile = null;
 
-        // only worry about altering the notes based on new number for current board
-        processNotesAfterNumClick(newHistory[newHistory.length - 1], [
-          row,
-          col
-        ]);
-
-        return {
-          ...state,
-          gameBoard: newHistory[newHistory.length - 1],
-          boardHistory: newHistory
-        };
-      } else {
-        return state;
-      }
-    case NEW_GAME_BUTTON_PRESSED:
-      const newBoard = getNewBoard();
-      return {
-        ...state,
-        solved: newBoard.solved,
-        gameBoard: newBoard.withEmptyTiles,
-        initialUnsolvedBoard: newBoard.withEmptyTiles.map(row =>
-          row.map(tile => ({ ...tile }))
-        ),
-        boardHistory: [
-          newBoard.withEmptyTiles.map(row => row.map(tile => ({ ...tile })))
-        ]
-      };
-    case RESTART_BUTTON_PRESSED:
-      return {
-        ...state,
-        gameBoard: state.initialBoard.map(row =>
-          row.map(tile => ({ ...tile }))
-        ),
-        boardHistory: [
-          state.initialBoard.map(row => row.map(tile => ({ ...tile })))
-        ],
-        selectedTile: null
-      };
-    case UNDO_BUTTON_PRESSED:
-      if (state.boardHistory.length > 1) {
-        const newHistory = [...state.boardHistory].slice(0, -1);
-        return {
-          ...state,
-          gameBoard: newHistory[newHistory.length - 1],
-          boardHistory: newHistory
-        };
-      } else {
-        return { ...state, gameBoard: state.boardHistory[0] };
-      }
-    default:
-      return state;
-  }
+        return;
+      case UNDO_BUTTON_PRESSED:
+        if (draft.boardHistory.length > 1) {
+          draft.boardHistory.pop();
+          draft.currentBoard =
+            draft.boardHistory[draft.boardHistory.length - 1];
+        } else {
+          draft.currentBoard = draft.boardHistory[0];
+        }
+        return;
+      default:
+        return draft;
+    }
+  });
 };
 
 export default reducer;
