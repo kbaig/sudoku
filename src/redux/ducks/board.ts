@@ -126,7 +126,9 @@ const defaultState: BoardState = {
   initialUnsolvedBoard: generatedBoard.withEmptyTiles.map(row =>
     row.map(tile => ({ ...tile }))
   ),
-  boardHistory: [[...generatedBoard.withEmptyTiles]],
+  boardHistory: [
+    generatedBoard.withEmptyTiles.map(row => row.map(tile => ({ ...tile })))
+  ],
   selectedTile: null,
   isInNotesMode: false,
   isInCheckForMistakesMode: true
@@ -274,7 +276,10 @@ const reducer: Reducer<BoardState, BoardAction> = (
         gameBoard: newBoard.withEmptyTiles,
         initialUnsolvedBoard: newBoard.withEmptyTiles.map(row =>
           row.map(tile => ({ ...tile }))
-        )
+        ),
+        boardHistory: [
+          newBoard.withEmptyTiles.map(row => row.map(tile => ({ ...tile })))
+        ]
       };
     case RESTART_BUTTON_PRESSED:
       return {
@@ -282,6 +287,9 @@ const reducer: Reducer<BoardState, BoardAction> = (
         gameBoard: state.initialUnsolvedBoard.map(row =>
           row.map(tile => ({ ...tile }))
         ),
+        boardHistory: [
+          state.initialUnsolvedBoard.map(row => row.map(tile => ({ ...tile })))
+        ],
         selectedTile: null
       };
     case UNDO_BUTTON_PRESSED:
