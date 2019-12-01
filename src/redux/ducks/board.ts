@@ -243,6 +243,10 @@ const reducer: Reducer<BoardState, BoardAction> = (
 
           newBoard[row][col] = { ...newTile };
 
+          if (!state.isInCheckForMistakesMode) {
+            evaluateWholeBoardWithoutMistakes(newBoard);
+          }
+
           evaluateContext(newBoard, [row, col]);
 
           return newBoard;
