@@ -235,13 +235,29 @@ const reducer: Reducer<BoardState, BoardAction> = (
       const { selectedTile, gameBoard, solved } = state;
       if (selectedTile) {
         const [row, col] = selectedTile;
-        gameBoard[row][col] = { ...solved[row][col] };
+        const newTile = { ...solved[row][col] };
 
-        evaluateContext(gameBoard, [row, col]);
+        // add read only tile to each board in history so that hints can not be undone
+        const newHistory = state.boardHistory.map(board => {
+          const newBoard = board.map(row => row.map(tile => ({ ...tile })));
+
+          newBoard[row][col] = { ...newTile };
+
+          evaluateContext(newBoard, [row, col]);
+
+          return newBoard;
+        });
+
+        // only worry about altering the notes based on new number for current board
+        processNotesAfterNumClick(newHistory[newHistory.length - 1], [
+          row,
+          col
+        ]);
 
         return {
           ...state,
-          gameBoard: [...gameBoard]
+          gameBoard: newHistory[newHistory.length - 1],
+          boardHistory: newHistory
         };
       } else {
         return state;
