@@ -9,32 +9,32 @@ import { SelectedTile, selectTile } from '../../redux/ducks/board';
 import PausedBoardOverlay from '../PausedBoardOverlay';
 
 interface Props {
-  gameBoard: BoardType;
+  currentBoard: BoardType;
   isPlaying: boolean;
   selectedTile: SelectedTile;
   selectTile: (row: number, col: number) => void;
 }
 
 export const Board: React.FC<Props> = ({
-  gameBoard,
+  currentBoard,
   isPlaying,
   selectedTile,
   selectTile
 }) => {
   const selectedValue =
-    selectedTile && gameBoard[selectedTile[0]][selectedTile[1]].value;
+    selectedTile && currentBoard[selectedTile[0]][selectedTile[1]].value;
   const valueIsNumber = typeof selectedValue === 'number';
 
   return isPlaying ? (
     <div className='board'>
-      {gameBoard.map((row, i) => (
+      {currentBoard.map((row, i) => (
         <React.Fragment key={i}>
           {row.map(({ type, value, animationDelay }, j) => {
-            const rowCoords = gameBoard[i].map((_, j) => `${i},${j}`);
-            const colCoords = gameBoard.map((_, i) => `${i},${j}`);
+            const rowCoords = currentBoard[i].map((_, j) => `${i},${j}`);
+            const colCoords = currentBoard.map((_, i) => `${i},${j}`);
             const topRow = Math.floor(i / 3) * 3;
             const leftCol = Math.floor(j / 3) * 3;
-            const innerSquareCoords = gameBoard
+            const innerSquareCoords = currentBoard
               .slice(topRow, topRow + 3)
               .map((row, i) =>
                 row
@@ -64,7 +64,7 @@ export const Board: React.FC<Props> = ({
                   !!selectedTile &&
                   (selectedTile[0] === i ||
                     selectedTile[1] === j ||
-                    isInSameSquare([i, j], selectedTile, gameBoard))
+                    isInSameSquare([i, j], selectedTile, currentBoard))
                 }
                 sameIsSelected={
                   !!selectedTile &&
@@ -75,7 +75,7 @@ export const Board: React.FC<Props> = ({
                 sameIsIncorrectlyUsed={Array.from(sameContextCoords).some(
                   coords => {
                     const [row, col] = coords.split(',').map(s => parseInt(s));
-                    const { type, value: wrongValue } = gameBoard[row][col];
+                    const { type, value: wrongValue } = currentBoard[row][col];
 
                     return (
                       !(row === i && col === j) &&
@@ -95,14 +95,14 @@ export const Board: React.FC<Props> = ({
     </div>
   ) : (
     <div className='board'>
-      {gameBoard.map((row, i) => (
+      {currentBoard.map((row, i) => (
         <React.Fragment key={i}>
           {row.map(({ type, value, animationDelay }, j) => {
-            const rowCoords = gameBoard[i].map((_, j) => `${i},${j}`);
-            const colCoords = gameBoard.map((_, i) => `${i},${j}`);
+            const rowCoords = currentBoard[i].map((_, j) => `${i},${j}`);
+            const colCoords = currentBoard.map((_, i) => `${i},${j}`);
             const topRow = Math.floor(i / 3) * 3;
             const leftCol = Math.floor(j / 3) * 3;
-            const innerSquareCoords = gameBoard
+            const innerSquareCoords = currentBoard
               .slice(topRow, topRow + 3)
               .map((row, i) =>
                 row
@@ -141,10 +141,10 @@ export const Board: React.FC<Props> = ({
 };
 
 const mapStateToProps = ({
-  board: { gameBoard, selectedTile },
+  board: { currentBoard, selectedTile },
   timer: { isPlaying }
 }: State) => ({
-  gameBoard,
+  currentBoard,
   selectedTile,
   isPlaying
 });

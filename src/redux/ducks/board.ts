@@ -12,9 +12,9 @@ import {
 export type SelectedTile = null | [number, number];
 
 export interface BoardState {
-  solved: BoardType;
-  initialUnsolvedBoard: BoardType;
-  gameBoard: BoardType;
+  currentBoard: BoardType;
+  initialBoard: BoardType;
+  solvedBoard: BoardType;
   boardHistory: BoardType[];
   selectedTile: SelectedTile;
   isInNotesMode: boolean;
@@ -121,9 +121,9 @@ const generatedBoard = getNewBoard();
 
 // default state
 const defaultState: BoardState = {
-  solved: generatedBoard.solved,
-  gameBoard: generatedBoard.withEmptyTiles,
-  initialUnsolvedBoard: generatedBoard.withEmptyTiles.map(row =>
+  solvedBoard: generatedBoard.solved,
+  currentBoard: generatedBoard.withEmptyTiles,
+  initialBoard: generatedBoard.withEmptyTiles.map(row =>
     row.map(tile => ({ ...tile }))
   ),
   boardHistory: [
@@ -146,7 +146,7 @@ const reducer: Reducer<BoardState, BoardAction> = (
     case NUMBER_PRESSED:
       // only do something if there's a selected tile and it's editable
       if (state.selectedTile) {
-        let deepCopyBoard = state.gameBoard.map(row =>
+        let deepCopyBoard = state.currentBoard.map(row =>
           row.map(tile => ({ ...tile }))
         );
         const [row, column] = state.selectedTile;
@@ -158,7 +158,7 @@ const reducer: Reducer<BoardState, BoardAction> = (
             prevTileState,
             action.payload,
             [row, column],
-            state.solved,
+            state.solvedBoard,
             state.isInNotesMode
           );
 
@@ -169,7 +169,7 @@ const reducer: Reducer<BoardState, BoardAction> = (
           } else {
             deepCopyBoard = evaluateWholeBoardWithoutMistakes(deepCopyBoard);
             deepCopyBoard.forEach((row, i) =>
-              row.forEach((tile, j) => evaluateContext(gameBoard, [i, j]))
+              row.forEach((tile, j) => evaluateContext(currentBoard, [i, j]))
             );
           }
 
@@ -188,7 +188,7 @@ const reducer: Reducer<BoardState, BoardAction> = (
     case ERASE_BUTTON_PRESSED:
       // only erase if there's a selected tile, it's editable, and isn't already blank
       if (state.selectedTile) {
-        let deepCopyBoard = state.gameBoard.map(row =>
+        let deepCopyBoard = state.currentBoard.map(row =>
           row.map(tile => ({ ...tile }))
         );
         const [row, column] = state.selectedTile;
@@ -200,7 +200,7 @@ const reducer: Reducer<BoardState, BoardAction> = (
             prevTileState,
             null,
             [row, column],
-            state.solved,
+            state.solvedBoard,
             state.isInNotesMode
           );
 
@@ -211,7 +211,7 @@ const reducer: Reducer<BoardState, BoardAction> = (
           } else {
             deepCopyBoard = evaluateWholeBoardWithoutMistakes(deepCopyBoard);
             deepCopyBoard.forEach((row, i) =>
-              row.forEach((tile, j) => evaluateContext(gameBoard, [i, j]))
+              row.forEach((tile, j) => evaluateContext(currentBoard, [i, j]))
             );
           }
 
@@ -230,14 +230,17 @@ const reducer: Reducer<BoardState, BoardAction> = (
         ...state,
         isInCheckForMistakesMode: !state.isInCheckForMistakesMode,
         gameBoard: state.isInCheckForMistakesMode
-          ? evaluateWholeBoardWithoutMistakes(state.gameBoard)
-          : evaluateWholeBoardWithMistakes(state.gameBoard, state.solved)
+          ? evaluateWholeBoardWithoutMistakes(state.currentBoard)
+          : evaluateWholeBoardWithMistakes(
+              state.currentBoard,
+              state.solvedBoard
+            )
       };
     case HINT_BUTTON_PRESSED:
-      const { selectedTile, gameBoard, solved } = state;
+      const { selectedTile, currentBoard, solvedBoard } = state;
       if (selectedTile) {
         const [row, col] = selectedTile;
-        const newTile = { ...solved[row][col] };
+        const newTile = { ...solvedBoard[row][col] };
 
         // add read only tile to each board in history so that hints can not be undone
         const newHistory = state.boardHistory.map(board => {
@@ -284,11 +287,11 @@ const reducer: Reducer<BoardState, BoardAction> = (
     case RESTART_BUTTON_PRESSED:
       return {
         ...state,
-        gameBoard: state.initialUnsolvedBoard.map(row =>
+        gameBoard: state.initialBoard.map(row =>
           row.map(tile => ({ ...tile }))
         ),
         boardHistory: [
-          state.initialUnsolvedBoard.map(row => row.map(tile => ({ ...tile })))
+          state.initialBoard.map(row => row.map(tile => ({ ...tile })))
         ],
         selectedTile: null
       };

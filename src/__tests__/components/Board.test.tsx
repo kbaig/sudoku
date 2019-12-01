@@ -18,7 +18,7 @@ describe('<Board />', () => {
       (wrapper = shallow(
         <Board
           isPlaying
-          gameBoard={board}
+          currentBoard={board}
           selectedTile={null}
           selectTile={selectTile}
         />
@@ -64,7 +64,7 @@ describe('<Board />', () => {
     wrapper = shallow(
       <Board
         isPlaying
-        gameBoard={board}
+        currentBoard={board}
         selectedTile={[0, 0]}
         selectTile={selectTile}
       />
@@ -84,7 +84,7 @@ describe('<Board />', () => {
     wrapper = shallow(
       <Board
         isPlaying
-        gameBoard={board}
+        currentBoard={board}
         selectedTile={[selectedRow, selectedCol]}
         selectTile={selectTile}
       />
@@ -115,7 +115,7 @@ describe('<Board />', () => {
     wrapper = shallow(
       <Board
         isPlaying
-        gameBoard={board}
+        currentBoard={board}
         selectedTile={[selectedRow, selectedCol]}
         selectTile={selectTile}
       />
@@ -167,7 +167,7 @@ describe('<Board />', () => {
     wrapper = shallow(
       <Board
         isPlaying
-        gameBoard={boardWithWrongValue}
+        currentBoard={boardWithWrongValue}
         selectedTile={null}
         selectTile={selectTile}
       />
@@ -242,7 +242,7 @@ describe('<Board />', () => {
     wrapper = shallow(
       <Board
         isPlaying={false}
-        gameBoard={board}
+        currentBoard={board}
         selectedTile={null}
         selectTile={selectTile}
       />
@@ -255,7 +255,7 @@ describe('<Board />', () => {
     wrapper = shallow(
       <Board
         isPlaying={false}
-        gameBoard={board}
+        currentBoard={board}
         selectedTile={null}
         selectTile={selectTile}
       />
