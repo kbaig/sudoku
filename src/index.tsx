@@ -6,9 +6,11 @@ import App from './components/App';
 import { store } from './redux';
 
 const appWithProviders = (
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
 );
 
 ReactDOM.render(appWithProviders, document.getElementById('root'));
