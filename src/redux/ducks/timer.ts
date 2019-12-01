@@ -57,10 +57,13 @@ const reducer: Reducer<TimerState, TimerAction> = (
     switch (action.type) {
       case PAUSE_PLAY_BUTTON_PRESSED:
         draft.isPlaying = !draft.isPlaying;
+        return;
       case PAUSED_BOARD_OVERLAY_CLICKED:
         draft.isPlaying = true;
+        return;
       case TIME_INCREMENTED:
         draft.seconds++;
+        return;
       default:
         return draft;
     }
