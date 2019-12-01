@@ -21,12 +21,18 @@
 
 .keypad .toggle-notes-button,
 .keypad .hint-button,
-.keypad .erase-button {
+.keypad .erase-button,
+.keypad .undo-button {
   grid-column-end: span 3;
 }
 
-.keypad .toggle-notes-button {
+.keypad .toggle-notes-button,
+.keypad .erase-button {
   border-right: none;
+}
+
+.keypad .toggle-notes-button,
+.keypad .hint-button {
   border-bottom: none;
 }
 
@@ -50,21 +56,24 @@
 
   .keypad .toggle-notes-button,
   .keypad .hint-button,
-  .keypad .erase-button {
+  .keypad .erase-button,
+  .keypad .undo-button {
     grid-row-start: 1;
-    grid-column-end: span 12;
+    grid-column-end: span 9;
   }
 
   .keypad .numkey,
   .keypad .erase-button,
   .keypad .hint-button,
-  .keypad .toggle-notes-button {
+  .keypad .toggle-notes-button,
+  .keypad .undo-button {
     border: none;
   }
 
   .keypad .erase-button svg,
   .keypad .hint-button svg,
-  .keypad .toggle-notes-button svg {
+  .keypad .toggle-notes-button svg,
+  .keypad .undo-button svg {
     transform: scale(0.9);
   }
 }

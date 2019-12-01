@@ -1,0 +1,24 @@
+.undo-button {
+  cursor: pointer;
+  background: white;
+  border: 1px solid hsl(218, 20%, 79%);
+  padding: 12px 0 6px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: hsl(213, 30%, 29%);
+  transition: all 200ms ease-in-out;
+}
+
+.undo-button:hover,
+.undo-button:focus {
+  background: hsl(214, 41%, 97%);
+}
+
+.undo-button svg {
+  margin-bottom: 3px;
+  width: 30px;
+  height: 32px;
+}

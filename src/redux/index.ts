@@ -21,6 +21,7 @@ const initialState: State = {
     initialUnsolvedBoard: withEmptyTiles.map(row =>
       row.map(tile => ({ ...tile }))
     ),
+    boardHistory: [[...withEmptyTiles]],
     selectedTile: null,
     isInNotesMode: false,
     isInCheckForMistakesMode: true

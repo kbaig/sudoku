@@ -6,6 +6,7 @@ import EraseButton from '../../components/EraseButton';
 import ToggleNotesButton from '../../components/ToggleNotesButton';
 import HintButton from '../../components/HintButton';
 import NewGameButton from '../../components/NewGameButton';
+import UndoButton from '../../components/UndoButton';
 
 const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -35,5 +36,9 @@ describe('<Keypad />', () => {
 
   it('renders a <NewGameButton />', () => {
     expect(wrapper.find(NewGameButton).length).toBe(1);
+  });
+
+  it('renders a <UndoButton />', () => {
+    expect(wrapper.find(UndoButton).length).toBe(1);
   });
 });

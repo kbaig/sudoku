@@ -15,6 +15,7 @@ export interface BoardState {
   solved: BoardType;
   initialUnsolvedBoard: BoardType;
   gameBoard: BoardType;
+  boardHistory: BoardType[];
   selectedTile: SelectedTile;
   isInNotesMode: boolean;
   isInCheckForMistakesMode: boolean;
@@ -29,6 +30,7 @@ const HINT_BUTTON_PRESSED = 'HINT_BUTTON_PRESSED';
 const ERASE_BUTTON_PRESSED = 'ERASE_BUTTON_PRESSED';
 const NEW_GAME_BUTTON_PRESSED = 'NEW_GAME_BUTTON_PRESSED';
 const RESTART_BUTTON_PRESSED = 'RESTART_BUTTON_PRESSED';
+const UNDO_BUTTON_PRESSED = 'UNDO_BUTTON_PRESSED';
 
 // action creators
 interface SelectTileAction {
@@ -68,6 +70,10 @@ interface RestartGameAction {
   type: typeof RESTART_BUTTON_PRESSED;
 }
 
+interface UndoAction {
+  type: typeof UNDO_BUTTON_PRESSED;
+}
+
 export type BoardAction =
   | PressNumberAction
   | SelectTileAction
@@ -76,7 +82,8 @@ export type BoardAction =
   | GetHintAction
   | EraseTileAction
   | StartNewGameAction
-  | RestartGameAction;
+  | RestartGameAction
+  | UndoAction;
 
 export const selectTile = (row: number, column: number): SelectTileAction => ({
   type: TILE_SELECTED,
@@ -108,6 +115,8 @@ export const restartGame = (): BoardAction => ({
   type: RESTART_BUTTON_PRESSED
 });
 
+export const undo = (): BoardAction => ({ type: UNDO_BUTTON_PRESSED });
+
 const generatedBoard = getNewBoard();
 
 // default state
@@ -117,6 +126,7 @@ const defaultState: BoardState = {
   initialUnsolvedBoard: generatedBoard.withEmptyTiles.map(row =>
     row.map(tile => ({ ...tile }))
   ),
+  boardHistory: [[...generatedBoard.withEmptyTiles]],
   selectedTile: null,
   isInNotesMode: false,
   isInCheckForMistakesMode: true
@@ -134,13 +144,15 @@ const reducer: Reducer<BoardState, BoardAction> = (
     case NUMBER_PRESSED:
       // only do something if there's a selected tile and it's editable
       if (state.selectedTile) {
-        let gameBoard = [...state.gameBoard] as BoardType;
+        let deepCopyBoard = state.gameBoard.map(row =>
+          row.map(tile => ({ ...tile }))
+        );
         const [row, column] = state.selectedTile;
 
-        const prevTileState = gameBoard[row][column];
+        const prevTileState = deepCopyBoard[row][column];
 
         if (prevTileState.type !== 'readOnly') {
-          gameBoard[row][column] = changeTileValue(
+          deepCopyBoard[row][column] = changeTileValue(
             prevTileState,
             action.payload,
             [row, column],
@@ -151,19 +163,22 @@ const reducer: Reducer<BoardState, BoardAction> = (
           // only need to concern ourselves with the selected tile as far
           // as tile correctness of all tiles and win state in check for mistakes mode
           if (state.isInCheckForMistakesMode) {
-            evaluateContext(gameBoard, [row, column]);
+            evaluateContext(deepCopyBoard, [row, column]);
           } else {
-            gameBoard = evaluateWholeBoardWithoutMistakes(gameBoard);
-            gameBoard.forEach((row, i) =>
+            deepCopyBoard = evaluateWholeBoardWithoutMistakes(deepCopyBoard);
+            deepCopyBoard.forEach((row, i) =>
               row.forEach((tile, j) => evaluateContext(gameBoard, [i, j]))
             );
           }
 
+          const gameBoardWithProcessedNotes = state.isInNotesMode
+            ? deepCopyBoard
+            : processNotesAfterNumClick(deepCopyBoard, [row, column]);
+
           return {
             ...state,
-            gameBoard: state.isInNotesMode
-              ? gameBoard
-              : processNotesAfterNumClick(gameBoard, [row, column])
+            gameBoard: gameBoardWithProcessedNotes,
+            boardHistory: [...state.boardHistory, gameBoardWithProcessedNotes]
           };
         }
       }
@@ -171,13 +186,15 @@ const reducer: Reducer<BoardState, BoardAction> = (
     case ERASE_BUTTON_PRESSED:
       // only erase if there's a selected tile, it's editable, and isn't already blank
       if (state.selectedTile) {
-        let gameBoard = [...state.gameBoard] as BoardType;
+        let deepCopyBoard = state.gameBoard.map(row =>
+          row.map(tile => ({ ...tile }))
+        );
         const [row, column] = state.selectedTile;
 
-        const prevTileState = gameBoard[row][column];
+        const prevTileState = deepCopyBoard[row][column];
 
         if (prevTileState.type !== 'readOnly' && prevTileState.value) {
-          gameBoard[row][column] = changeTileValue(
+          deepCopyBoard[row][column] = changeTileValue(
             prevTileState,
             null,
             [row, column],
@@ -188,15 +205,19 @@ const reducer: Reducer<BoardState, BoardAction> = (
           // only need to concern ourselves with the selected tile as far
           // as tile correctness of all tiles and win state in check for mistakes mode
           if (state.isInCheckForMistakesMode) {
-            evaluateContext(gameBoard, [row, column]);
+            evaluateContext(deepCopyBoard, [row, column]);
           } else {
-            gameBoard = evaluateWholeBoardWithoutMistakes(gameBoard);
-            gameBoard.forEach((row, i) =>
+            deepCopyBoard = evaluateWholeBoardWithoutMistakes(deepCopyBoard);
+            deepCopyBoard.forEach((row, i) =>
               row.forEach((tile, j) => evaluateContext(gameBoard, [i, j]))
             );
           }
 
-          return { ...state, gameBoard };
+          return {
+            ...state,
+            gameBoard: deepCopyBoard,
+            boardHistory: [...state.boardHistory, deepCopyBoard]
+          };
         }
       }
       return state;
@@ -243,6 +264,17 @@ const reducer: Reducer<BoardState, BoardAction> = (
         ),
         selectedTile: null
       };
+    case UNDO_BUTTON_PRESSED:
+      if (state.boardHistory.length > 1) {
+        const newHistory = [...state.boardHistory].slice(0, -1);
+        return {
+          ...state,
+          gameBoard: newHistory[newHistory.length - 1],
+          boardHistory: newHistory
+        };
+      } else {
+        return { ...state, gameBoard: state.boardHistory[0] };
+      }
     default:
       return state;
   }
