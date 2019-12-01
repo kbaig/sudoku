@@ -61,6 +61,12 @@
   .keypad .toggle-notes-button {
     border: none;
   }
+
+  .keypad .erase-button svg,
+  .keypad .hint-button svg,
+  .keypad .toggle-notes-button svg {
+    transform: scale(0.9);
+  }
 }
 
 @media (max-width: 660px) {
