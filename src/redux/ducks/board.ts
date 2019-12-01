@@ -3,6 +3,10 @@ import { TileNumberType, BoardType } from '../../types/gameBoard';
 import { Reducer } from 'redux';
 import { getNewBoard } from '../../util/generateBoard';
 import { evaluateContext } from '../../util/evalutateContext';
+import {
+  evaluateWholeBoardWithoutMistakes,
+  evaluateWholeBoardWithMistakes
+} from '../../util/evaluateWholeBoard';
 
 //types
 export type SelectedTile = null | [number, number];
@@ -130,7 +134,7 @@ const reducer: Reducer<BoardState, BoardAction> = (
     case NUMBER_PRESSED:
       // only do something if there's a selected tile and it's editable
       if (state.selectedTile) {
-        const gameBoard = [...state.gameBoard] as BoardType;
+        let gameBoard = [...state.gameBoard] as BoardType;
         const [row, column] = state.selectedTile;
 
         const prevTileState = gameBoard[row][column];
@@ -144,7 +148,16 @@ const reducer: Reducer<BoardState, BoardAction> = (
             state.isInNotesMode
           );
 
-          evaluateContext(gameBoard, [row, column]);
+          // only need to concern ourselves with the selected tile as far
+          // as tile correctness of all tiles and win state in check for mistakes mode
+          if (state.isInCheckForMistakesMode) {
+            evaluateContext(gameBoard, [row, column]);
+          } else {
+            gameBoard = evaluateWholeBoardWithoutMistakes(gameBoard);
+            gameBoard.forEach((row, i) =>
+              row.forEach((tile, j) => evaluateContext(gameBoard, [i, j]))
+            );
+          }
 
           return {
             ...state,
@@ -156,14 +169,14 @@ const reducer: Reducer<BoardState, BoardAction> = (
       }
       return state;
     case ERASE_BUTTON_PRESSED:
-      // only erase if there's a selected tile and it's editable
+      // only erase if there's a selected tile, it's editable, and isn't already blank
       if (state.selectedTile) {
-        const gameBoard = [...state.gameBoard] as BoardType;
+        let gameBoard = [...state.gameBoard] as BoardType;
         const [row, column] = state.selectedTile;
 
         const prevTileState = gameBoard[row][column];
 
-        if (prevTileState.type !== 'readOnly') {
+        if (prevTileState.type !== 'readOnly' && prevTileState.value) {
           gameBoard[row][column] = changeTileValue(
             prevTileState,
             null,
@@ -172,7 +185,16 @@ const reducer: Reducer<BoardState, BoardAction> = (
             state.isInNotesMode
           );
 
-          evaluateContext(gameBoard, [row, column]);
+          // only need to concern ourselves with the selected tile as far
+          // as tile correctness of all tiles and win state in check for mistakes mode
+          if (state.isInCheckForMistakesMode) {
+            evaluateContext(gameBoard, [row, column]);
+          } else {
+            gameBoard = evaluateWholeBoardWithoutMistakes(gameBoard);
+            gameBoard.forEach((row, i) =>
+              row.forEach((tile, j) => evaluateContext(gameBoard, [i, j]))
+            );
+          }
 
           return { ...state, gameBoard };
         }
@@ -183,7 +205,10 @@ const reducer: Reducer<BoardState, BoardAction> = (
     case CHECK_FOR_MISTAKES_TOGGLE_PRESSED:
       return {
         ...state,
-        isInCheckForMistakesMode: !state.isInCheckForMistakesMode
+        isInCheckForMistakesMode: !state.isInCheckForMistakesMode,
+        gameBoard: state.isInCheckForMistakesMode
+          ? evaluateWholeBoardWithoutMistakes(state.gameBoard)
+          : evaluateWholeBoardWithMistakes(state.gameBoard, state.solved)
       };
     case HINT_BUTTON_PRESSED:
       const { selectedTile, gameBoard, solved } = state;

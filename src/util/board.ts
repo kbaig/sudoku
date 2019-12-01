@@ -40,7 +40,7 @@ export function changeTileValue(
   value: TileValue,
   [row, col]: [number, number],
   solvedBoard: BoardType,
-  isInNotesMode?: boolean
+  isInNotesMode: boolean
 ): BlankTile | CorrectTile | WrongTile | NotesTile {
   // return NotesTile if in notes mode
   if (isInNotesMode) {
