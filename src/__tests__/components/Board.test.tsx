@@ -1,10 +1,11 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Board } from '../../components/Board';
-import { getBoardLength, isInSameSquare } from '../../util/board';
 import Tile from '../../components/Tile';
 import { generateMockBoard } from '../../util/generateMockBoard';
 import PausedBoardOverlay from '../../components/PausedBoardOverlay';
+import getBoardLength from '../../util/getBoardLength';
+import isInSameSquare from '../../util/isInSameSquare';
 
 describe('<Board />', () => {
   let wrapper: ShallowWrapper;
@@ -100,7 +101,7 @@ describe('<Board />', () => {
         ).toBe(
           i === selectedRow ||
             j === selectedCol ||
-            isInSameSquare([i, j], [selectedRow, selectedCol], board)
+            isInSameSquare(board)([selectedRow, selectedCol])([i, j])
         );
       });
     });
@@ -224,11 +225,10 @@ describe('<Board />', () => {
             !(i === wrongRow && j === wrongCol) &&
             (i === wrongRow ||
               j === wrongCol ||
-              isInSameSquare(
-                [i, j],
-                [wrongRow, wrongCol],
-                boardWithWrongValue
-              )) &&
+              isInSameSquare(boardWithWrongValue)([wrongRow, wrongCol])([
+                i,
+                j
+              ])) &&
             boardWithWrongValue[i][j].value ===
               boardWithWrongValue[wrongRow][wrongCol].value
         );

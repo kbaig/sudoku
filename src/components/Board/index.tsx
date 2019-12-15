@@ -4,9 +4,9 @@ import Tile from '../Tile';
 import './Board.css';
 import { BoardType } from '../../types/gameBoard';
 import { State } from '../../redux';
-import { isInSameSquare } from '../../util/board';
 import { SelectedTile, selectTile } from '../../redux/ducks/board';
 import PausedBoardOverlay from '../PausedBoardOverlay';
+import isInSameSquare from '../../util/isInSameSquare';
 
 interface Props {
   currentBoard: BoardType;
@@ -64,7 +64,7 @@ export const Board: React.FC<Props> = ({
                   !!selectedTile &&
                   (selectedTile[0] === i ||
                     selectedTile[1] === j ||
-                    isInSameSquare([i, j], selectedTile, currentBoard))
+                    isInSameSquare(currentBoard)(selectedTile)([i, j]))
                 }
                 sameIsSelected={
                   !!selectedTile &&
