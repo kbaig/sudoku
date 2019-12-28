@@ -5,7 +5,7 @@ import Tile from '../../components/Tile';
 import { generateMockBoard } from '../../util/generateMockBoard';
 import PausedBoardOverlay from '../../components/PausedBoardOverlay';
 import getBoardLength from '../../util/getBoardLength';
-import isInSameSquare from '../../util/isInSameSquare';
+import { isInSameSquare } from '../../util/isInSameSquare';
 import { getTileContext } from '../../util/getTileContext';
 
 describe('<Board />', () => {
@@ -102,7 +102,7 @@ describe('<Board />', () => {
         ).toBe(
           i === selectedRow ||
             j === selectedCol ||
-            isInSameSquare(board)([selectedRow, selectedCol])([i, j])
+            isInSameSquare(board, [selectedRow, selectedCol], [i, j])
         );
       });
     });
@@ -207,10 +207,11 @@ describe('<Board />', () => {
             !(i === wrongRow && j === wrongCol) &&
             (i === wrongRow ||
               j === wrongCol ||
-              isInSameSquare(boardWithWrongValue)([wrongRow, wrongCol])([
-                i,
-                j
-              ])) &&
+              isInSameSquare(
+                boardWithWrongValue,
+                [wrongRow, wrongCol],
+                [i, j]
+              )) &&
             boardWithWrongValue[i][j].value ===
               boardWithWrongValue[wrongRow][wrongCol].value
         );
