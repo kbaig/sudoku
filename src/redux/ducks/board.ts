@@ -1,5 +1,6 @@
 import produce from 'immer';
-import { changeTileValue, processNotesAfterNumClick } from '../../util/board';
+import { processNotesAfterNumClick } from '../../util/board';
+import changeTileValue from '../../util/changeTileValue';
 import { TileNumberType, BoardType } from '../../types/gameBoard';
 import { Reducer } from 'redux';
 import { getNewBoard } from '../../util/generateBoard';
