@@ -17,12 +17,8 @@ export const getTileContext: (board: BoardType, coords: Coords) => Coords[] = (
   board,
   [row, col]
 ) => {
-  const getRowCoords = mapWithIndex<TileType[], string>(
-    (_, col) => `${row},${col}`
-  );
-  const getColCoords = mapWithIndex<TileType[], string>(
-    (_, row) => `${row},${col}`
-  );
+  const getRowCoords = mapWithIndex<TileType[], string>(col => `${row},${col}`);
+  const getColCoords = mapWithIndex<TileType[], string>(row => `${row},${col}`);
 
   const innerSquareLength = getInnerSquareLength(board);
   const getBoardCorner = getCorner(innerSquareLength);
