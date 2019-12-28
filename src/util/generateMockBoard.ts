@@ -1,21 +1,28 @@
-import { BoardType } from '../types/gameBoard';
+import {
+  BoardType,
+  BlankTile,
+  TileValue,
+  ReadOnlyTile
+} from '../types/gameBoard';
 import easyBoard from '../mockData/easyBoard';
+import { pipe } from 'fp-ts/lib/pipeable';
+import { map } from 'fp-ts/lib/Array';
 
-export const generateMockBoard = (): BoardType =>
-  easyBoard.map(row =>
-    row.map(value => {
-      if (typeof value === 'number') {
-        return {
-          type: 'readOnly',
-          animationDelay: null,
-          value
-        };
-      } else {
-        return {
-          type: 'blank',
-          animationDelay: null,
-          value
-        };
+const createNewTile: (value: TileValue) => ReadOnlyTile | BlankTile = value =>
+  typeof value === 'number'
+    ? {
+        type: 'readOnly',
+        animationDelay: null,
+        value
       }
-    })
+    : {
+        type: 'blank',
+        animationDelay: null,
+        value
+      };
+
+export const generateMockBoard: () => BoardType = () =>
+  pipe(
+    easyBoard,
+    map(row => pipe(row, map(createNewTile)))
   );
