@@ -7,6 +7,7 @@ import { State } from '../../redux';
 import { SelectedTile, selectTile } from '../../redux/ducks/board';
 import PausedBoardOverlay from '../PausedBoardOverlay';
 import isInSameSquare from '../../util/isInSameSquare';
+import { getTileContext } from '../../util/getTileContext';
 
 interface Props {
   currentBoard: BoardType;
@@ -30,25 +31,7 @@ export const Board: React.FC<Props> = ({
       {currentBoard.map((row, i) => (
         <React.Fragment key={i}>
           {row.map(({ type, value, animationDelay }, j) => {
-            const rowCoords = currentBoard[i].map((_, j) => `${i},${j}`);
-            const colCoords = currentBoard.map((_, i) => `${i},${j}`);
-            const topRow = Math.floor(i / 3) * 3;
-            const leftCol = Math.floor(j / 3) * 3;
-            const innerSquareCoords = currentBoard
-              .slice(topRow, topRow + 3)
-              .map((row, i) =>
-                row
-                  .slice(leftCol, leftCol + 3)
-                  .map((_, j) => `${i + topRow},${j + leftCol}`)
-              )
-              .reduce((a, b) => a.concat(b));
-
-            const sameContextCoords = new Set([
-              ...rowCoords,
-              ...colCoords,
-              ...innerSquareCoords
-            ]);
-            sameContextCoords.delete(`${i},${j}`);
+            const sameContextCoords = getTileContext(currentBoard, [i, j]);
 
             return (
               <Tile
@@ -72,18 +55,15 @@ export const Board: React.FC<Props> = ({
                   !(i === selectedTile[0] && j === selectedTile[1]) &&
                   value === selectedValue
                 }
-                sameIsIncorrectlyUsed={Array.from(sameContextCoords).some(
-                  coords => {
-                    const [row, col] = coords.split(',').map(s => parseInt(s));
-                    const { type, value: wrongValue } = currentBoard[row][col];
+                sameIsIncorrectlyUsed={sameContextCoords.some(([row, col]) => {
+                  const { type, value: wrongValue } = currentBoard[row][col];
 
-                    return (
-                      !(row === i && col === j) &&
-                      type === 'wrong' &&
-                      value === wrongValue
-                    );
-                  }
-                )}
+                  return (
+                    !(row === i && col === j) &&
+                    type === 'wrong' &&
+                    value === wrongValue
+                  );
+                })}
                 animationDelay={animationDelay}
               >
                 {value}
@@ -97,42 +77,20 @@ export const Board: React.FC<Props> = ({
     <div className='board'>
       {currentBoard.map((row, i) => (
         <React.Fragment key={i}>
-          {row.map(({ type, value, animationDelay }, j) => {
-            const rowCoords = currentBoard[i].map((_, j) => `${i},${j}`);
-            const colCoords = currentBoard.map((_, i) => `${i},${j}`);
-            const topRow = Math.floor(i / 3) * 3;
-            const leftCol = Math.floor(j / 3) * 3;
-            const innerSquareCoords = currentBoard
-              .slice(topRow, topRow + 3)
-              .map((row, i) =>
-                row
-                  .slice(leftCol, leftCol + 3)
-                  .map((_, j) => `${i + topRow},${j + leftCol}`)
-              )
-              .reduce((a, b) => a.concat(b));
-
-            const sameContextCoords = new Set([
-              ...rowCoords,
-              ...colCoords,
-              ...innerSquareCoords
-            ]);
-            sameContextCoords.delete(`${i},${j}`);
-
-            return (
-              <Tile
-                key={`${i},${j}`}
-                type='blank'
-                onClick={() => {}}
-                isSelected={false}
-                isHighlighted={false}
-                sameIsSelected={false}
-                sameIsIncorrectlyUsed={false}
-                animationDelay={null}
-              >
-                {null}
-              </Tile>
-            );
-          })}
+          {row.map((_, j) => (
+            <Tile
+              key={`${i},${j}`}
+              type='blank'
+              onClick={() => {}}
+              isSelected={false}
+              isHighlighted={false}
+              sameIsSelected={false}
+              sameIsIncorrectlyUsed={false}
+              animationDelay={null}
+            >
+              {null}
+            </Tile>
+          ))}
         </React.Fragment>
       ))}
       <PausedBoardOverlay />

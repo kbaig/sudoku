@@ -1,4 +1,5 @@
 import { BoardType } from '../types/gameBoard';
+import { getTileContext } from './getTileContext';
 
 export const evaluateWholeBoardWithMistakes = (
   board: BoardType,
@@ -34,30 +35,11 @@ export const evaluateWholeBoardWithoutMistakes = (
       ) {
         return tile;
       } else {
-        const rowCoords = board[i].map((_, j) => `${i},${j}`);
-        const colCoords = board.map((_, i) => `${i},${j}`);
-        const topRow = Math.floor(i / 3) * 3;
-        const leftCol = Math.floor(j / 3) * 3;
-        const innerSquareCoords = board
-          .slice(topRow, topRow + 3)
-          .map((row, i) =>
-            row
-              .slice(leftCol, leftCol + 3)
-              .map((_, j) => `${i + topRow},${j + leftCol}`)
-          )
-          .reduce((a, b) => a.concat(b));
-
-        const sameContextCoords = new Set([
-          ...rowCoords,
-          ...colCoords,
-          ...innerSquareCoords
-        ]);
-        sameContextCoords.delete(`${i},${j}`);
+        const sameContextCoords = getTileContext(board, [i, j]);
 
         return {
           ...tile,
-          type: Array.from(sameContextCoords).some(coord => {
-            const [tileRow, tileCol] = coord.split(',').map(s => parseInt(s));
+          type: sameContextCoords.some(([tileRow, tileCol]) => {
             return board[tileRow][tileCol].value === tile.value;
           })
             ? 'wrong'

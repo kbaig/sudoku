@@ -6,6 +6,7 @@ import { generateMockBoard } from '../../util/generateMockBoard';
 import PausedBoardOverlay from '../../components/PausedBoardOverlay';
 import getBoardLength from '../../util/getBoardLength';
 import isInSameSquare from '../../util/isInSameSquare';
+import { getTileContext } from '../../util/getTileContext';
 
 describe('<Board />', () => {
   let wrapper: ShallowWrapper;
@@ -174,32 +175,13 @@ describe('<Board />', () => {
       />
     );
 
-    const rowCoords = boardWithWrongValue[wrongRow].map(
-      (_, col) => `${wrongRow},${col}`
-    );
-    const colCoords = boardWithWrongValue.map((_, row) => `${row},${wrongCol}`);
-
-    const topRow = Math.floor(wrongRow / 3) * 3;
-    const leftCol = Math.floor(wrongCol / 3) * 3;
-    const innerSquareCoords = boardWithWrongValue
-      .slice(topRow, topRow + 3)
-      .map((row, i) =>
-        row
-          .slice(leftCol, leftCol + 3)
-          .map((col, j) => `${i + topRow},${j + leftCol}`)
-      )
-      .reduce((a, b) => a.concat(b));
-
-    const sameContextCoords = new Set([
-      ...rowCoords,
-      ...colCoords,
-      ...innerSquareCoords
+    const sameContextCoords = getTileContext(boardWithWrongValue, [
+      wrongRow,
+      wrongCol
     ]);
-    sameContextCoords.delete(`${wrongRow},${wrongCol}`);
 
-    const sameValCount = Array.from(sameContextCoords).reduce(
-      (sameValCount, coords) => {
-        const [row, col] = coords.split(',').map(s => parseInt(s));
+    const sameValCount = sameContextCoords.reduce(
+      (sameValCount, [row, col]) => {
         const { value } = boardWithWrongValue[row][col];
 
         return typeof value === 'number' &&
