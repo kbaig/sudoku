@@ -1,6 +1,6 @@
 import produce from 'immer';
 import changeTileValue from '../../util/changeTileValue';
-import { TileNumberType, BoardType } from '../../types/gameBoard';
+import { TileNumberType, BoardType, Coords } from '../../types/gameBoard';
 import { Reducer } from 'redux';
 import { getNewBoard } from '../../util/generateBoard';
 import { evaluateContext } from '../../util/evalutateContext';
@@ -14,7 +14,7 @@ import { fold } from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 //types
-export type SelectedTile = null | [number, number];
+export type SelectedTile = null | Coords;
 
 export interface BoardState {
   currentBoard: BoardType;

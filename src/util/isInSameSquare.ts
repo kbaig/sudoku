@@ -1,4 +1,4 @@
-import { BoardType } from '../types/gameBoard';
+import { BoardType, Coords } from '../types/gameBoard';
 import { getEq } from 'fp-ts/lib/Array';
 import { contramap, eqNumber } from 'fp-ts/lib/Eq';
 import { getCorner } from './getCorner';
@@ -11,8 +11,8 @@ const getEqSquare = (length: number) => getEq(getEqCorner(length));
 
 const isInSameSquareUncurried: (
   board: BoardType,
-  tile1: [number, number],
-  tile2: [number, number]
+  tile1: Coords,
+  tile2: Coords
 ) => boolean = (board, tile1, tile2) => {
   const eqSquare = pipe(board, getInnerSquareLength, getEqSquare);
 

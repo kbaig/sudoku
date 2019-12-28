@@ -1,10 +1,10 @@
-import { BoardType } from '../types/gameBoard';
+import { BoardType, Coords } from '../types/gameBoard';
 
 type GeneratedTileValue = null | number;
 type GeneratedBoard = GeneratedTileValue[][];
 
 // find first empty tile, row by row, throwing if none found
-export const findEmptyTile = (board: GeneratedBoard): [number, number] => {
+export const findEmptyTile = (board: GeneratedBoard): Coords => {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
       if (!board[i][j]) return [i, j];
@@ -27,7 +27,7 @@ export const isFull = (board: GeneratedBoard): boolean => {
 // find if adding a value to a given board would create a conflict
 export const hasNoConflict = (
   value: number,
-  [row, col]: [number, number],
+  [row, col]: Coords,
   board: GeneratedBoard
 ): boolean => {
   // clone board
@@ -120,7 +120,7 @@ export const hasOneSolution = (board: GeneratedBoard): boolean => {
   const newBoard = board.map(row => [...row]);
 
   // get all empty tiles
-  let emptyTiles: [number, number][] = [];
+  let emptyTiles: Coords[] = [];
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
       if (!board[i][j]) emptyTiles.push([i, j]);

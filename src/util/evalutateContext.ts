@@ -1,4 +1,4 @@
-import { TileType, BoardType, Row } from '../types/gameBoard';
+import { TileType, BoardType, Row, Coords } from '../types/gameBoard';
 
 const isCorrectValue = ({ type }: TileType): boolean =>
   type === 'readOnly' || type === 'correct';
@@ -6,7 +6,7 @@ const isCorrectValue = ({ type }: TileType): boolean =>
 // modify passed in board with animation values based on tile that was just entered
 export const evaluateContext = (
   gameBoard: BoardType,
-  [row, col]: [number, number]
+  [row, col]: Coords
 ): BoardType => {
   // row
   const rowTiles = gameBoard[row];

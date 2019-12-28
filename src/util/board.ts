@@ -5,13 +5,14 @@ import {
   TileValue,
   BlankTile,
   TileNumberType,
-  WrongTile
+  WrongTile,
+  Coords
 } from '../types/gameBoard';
 
 export function changeTileValue(
   tile: BlankTile | CorrectTile | WrongTile | NotesTile,
   value: TileValue,
-  [row, col]: [number, number],
+  [row, col]: Coords,
   solvedBoard: BoardType,
   isInNotesMode: boolean
 ): BlankTile | CorrectTile | WrongTile | NotesTile {
