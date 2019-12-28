@@ -42,3 +42,5 @@ export type TileType =
 export type Row = TileType[];
 
 export type BoardType = Row[];
+
+export type Coords = [number, number];

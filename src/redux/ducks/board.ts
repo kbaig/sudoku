@@ -1,5 +1,4 @@
 import produce from 'immer';
-import { processNotesAfterNumClick } from '../../util/board';
 import changeTileValue from '../../util/changeTileValue';
 import { TileNumberType, BoardType } from '../../types/gameBoard';
 import { Reducer } from 'redux';
@@ -10,6 +9,9 @@ import {
   evaluateWholeBoardWithMistakes
 } from '../../util/evaluateWholeBoard';
 import { deepCloneBoard } from '../../util/deepCloneBoard';
+import { filterNotesInTileContext } from '../../util/filterNotesInTileContext';
+import { fold } from 'fp-ts/lib/Either';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 //types
 export type SelectedTile = null | [number, number];
@@ -181,9 +183,14 @@ const reducer: Reducer<BoardState, BoardAction> = (
             }
 
             if (!draft.isInNotesMode) {
-              draft.currentBoard = processNotesAfterNumClick(
-                draft.currentBoard,
-                [row, col]
+              draft.currentBoard = pipe(
+                filterNotesInTileContext(draft.currentBoard, [row, col]),
+                fold(
+                  err => {
+                    throw new Error(err);
+                  },
+                  x => x
+                )
               );
             }
 
@@ -264,9 +271,17 @@ const reducer: Reducer<BoardState, BoardAction> = (
           });
 
           // only worry about altering the notes based on new number for current board
-          processNotesAfterNumClick(
-            draft.boardHistory[draft.boardHistory.length - 1],
-            [row, col]
+          draft.currentBoard = pipe(
+            filterNotesInTileContext(
+              draft.boardHistory[draft.boardHistory.length - 1],
+              [row, col]
+            ),
+            fold(
+              err => {
+                throw new Error(err);
+              },
+              x => x
+            )
           );
         }
         return;
