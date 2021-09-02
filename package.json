@@ -8,7 +8,7 @@
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
     "classnames": "^2.2.6",
-    "immer": "^5.0.0",
+    "immer": "^9.0.6",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-icons": "^3.8.0",
